@@ -1,0 +1,154 @@
+@startuml
+' ======== Abstract Classes and Enumerations ========
+enum Difficulty {
+  Easy
+  Medium
+  Hard
+}
+
+enum Operation {
+  Addition
+  Substraction
+  Multiplication
+  Division
+}
+
+
+class DataPersistence {
+  +save()
+  +retrieve()
+}
+
+GameSession ..> DataPersistence
+Statistics ..> DataPersistence
+
+
+' ======== User/Account Domain ========
+abstract class User {
+  +int userId
+  +String username
+  +String password
+  +boolean isAuthorized
+  +login()
+  +logout()
+  +signUp()
+}
+
+class Player {
+  +playGame()
+  +viewStatistics()
+  +togglePrivate()
+}
+
+class Admin {
+  +manageUsers()
+  +updateGameContent()
+}
+
+User <|-- Player
+User <|-- Admin
+
+
+
+' ======== Game Domain ========
+class Game {
+  +String name
+  +String description
+  -Difficulty difficulty
+  
+  +int finalScore
+  
+  +startGame()
+  +endGame()
+  +saveScore() 
+  +getUserHighscore() 
+  +getTopScores()
+}
+
+
+
+class MathGame {
+  -int currentScore 
+  -List<Operation> operations
+  -List<int> numbers
+  -List<int> options
+  -boolean isCorrect
+
+  +generateQuestion(currentScore: int)
+  +generateOptions()
+  +checkAnswer()
+}
+
+class SudokuGame {
+  - List<List<int>> grid
+  - List<List<int>> solution
+  - int gridSize
+  - boolean isComplete
+  
+  +generateSudoku()
+  +checkAnswer()
+  +isSudokuComplete()
+}
+
+class PairMatchingGame {
+  -List<Card> cards
+  -int matchedPairs
+  -int mistakes
+
+  -generateCardDeck()
+  +checkSelectedCards()
+}
+
+class AimTrainerGame {
+  -int targetPosititionX
+  -int targetPosititionY
+  -int score
+
+  +spawnTarget()
+  +moveTarget()
+}
+
+
+Game <|-- MathGame
+Game <|-- SudokuGame
+Game <|-- PairMatchingGame
+Game <|-- AimTrainerGame
+
+
+class TimerService {
+  +int RemainingTime
+  +Start()
+  +Stop()
+  +OnTick()
+}
+
+Game *-- TimerService
+
+' ======== Statistics/High Score Domain ========
+class GameSession {
+  +int sessionId
+  +recordSession()
+  +selectGame()
+  +displayHighScore()
+}
+
+class Statistics {
+  +viewShortStats()
+  +viewTimeline()
+  +viewStatsByDifficulty()
+  +viewGraph()
+}
+
+GameSession o-- Game
+GameSession o-- Player
+Statistics -- GameSession
+
+' ======== Services & Persistence ========
+class AuthService {
+  +authorize()
+  +register()
+}
+
+User ..> AuthService
+
+@enduml

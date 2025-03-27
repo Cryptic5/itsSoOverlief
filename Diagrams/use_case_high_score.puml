@@ -1,0 +1,16 @@
+@startuml use_case_high_score
+left to right direction
+:Authenticated Player: as player
+
+rectangle "High score module" as hs_module {
+    usecase "View shortened game statistics" as view_shortened
+    usecase "View graph of game statistics" as view_graph
+    usecase "View timeline of played games" as view_timeline
+    usecase "View game statistics by difficulty" as view_by_difficulty
+}
+
+player --> view_shortened
+player --> view_graph
+player --> view_timeline
+player --> view_by_difficulty
+@enduml

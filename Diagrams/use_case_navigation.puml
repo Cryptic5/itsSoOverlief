@@ -1,0 +1,14 @@
+@startuml use_case_navigation
+left to right direction
+:Player: as player
+
+rectangle "Navigation" as navigation {
+    usecase "Go to home page (game selection)" as home_page
+    usecase "Go to account page" as account_page
+    usecase "Go to statistics page" as statistics_page
+}
+
+player --> home_page
+player --> account_page
+player --> statistics_page
+@enduml

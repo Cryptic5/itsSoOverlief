@@ -1,0 +1,12 @@
+@startuml use_case_game_selection
+left to right direction
+:Player: as player
+
+rectangle "Game selection" as game_selection {
+   usecase "Start game" as start_game
+   usecase "Change difficulty" as change_difficulty
+}
+
+player --> start_game
+player --> change_difficulty
+@enduml

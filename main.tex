@@ -145,7 +145,42 @@ enables a lightweight client while leveraging cloud infrastructure for
 back-end processing and storage of user and game data.
 
 \subsection{CI/CD}
-TODO: Mykolas
+
+\begin{figure}[H]
+        \centering
+        \textwidthdiagram[0.8]{CI.tex}
+        \caption{CI Pipeline}
+        \label{fig:CI_pipeline}
+\end{figure}
+Figure~\ref{fig:CI_pipeline} focuses on our pull request (PR) validation
+workflow. Triggered by any pull request targeting the main branch, this
+pipeline starts by setting up a linux environment (latest Ubuntu) and
+executing a series of steps: checking out the code, setting up the .NET
+environment, restoring dependencies, building the solution, and running
+tests. The critical decision point here assesses whether all tests pass. If
+they do, the PR status is marked as passing, signaling readiness for review
+and potential merge. If any tests fail, the pipeline marks the PR as failing
+and prevents it from being merged, thus upholding code quality and integrity
+before changes are integrated into the main branch.
+
+\begin{figure}[H]
+    \centering
+    \textwidthdiagram[0.8]{CD.tex}
+    \caption{CD Pipeline}
+    \label{fig:CD_pipeline}
+\end{figure}
+Figure~\ref{fig:CD_pipeline} illustrates our CD pipeline using GitHub
+Actions. The whole process is excecuted on a linux(latest Ubuntu)
+environment. The process begins when a push to the main branch or a manual
+trigger starts the pipeline. Within the "Build and Test Job" partition,
+the pipeline checks out the repository, sets up the .NET environment,
+restores dependencies, and builds the application. After running tests,
+the workflow evaluates the outcome: if the tests succeed, it proceeds to
+publish the application and upload the resulting artifact; if any test fails,
+the deployment is aborted immediately. Following a successful build and test
+phase, the "Deploy Job" partition retrieves the artifact from the previous
+step and deploys it to Azure, ensuring that only verified code is promoted
+to production.
 
 \section{Use Case View}
 

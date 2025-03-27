@@ -1,0 +1,29 @@
+@startuml
+start
+note right: Triggered by push to main or manual dispatch
+
+
+partition "Build and Test Job" {
+    :Find Github Runner;
+    :Checkout Code;
+    :Setup .NET (actions/setup-dotnet);
+    :Restore Dependencies (dotnet restore);
+    :Build Application (dotnet build);
+    :Run Tests (dotnet test);
+    if (Tests Succeeded) then (yes)
+        :Publish Application (dotnet publish);
+        :Upload Artifact (actions/upload-artifact);
+    else (no)
+        :Abort Deployment;
+        stop
+    endif
+}
+
+partition "Deploy Job" {
+    :Find Github Runner;
+    :Download Artifact (actions/download-artifact);
+    :Deploy to Azure (azure/webapps-deploy);
+}
+
+stop
+@enduml

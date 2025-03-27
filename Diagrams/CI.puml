@@ -1,0 +1,21 @@
+@startuml
+!pragma layout smetana
+start
+note right : Triggered by pull requests to main
+
+:Find Github Runner;
+:Checkout Code;
+:Setup .NET (actions/setup-dotnet);
+:Restore Dependencies (dotnet restore);
+:Build Solution (dotnet build);
+:Run Tests (dotnet test);
+
+if (All tests pass?) then (yes)
+    :Mark PR status as passing;
+else (no)
+    :Mark PR status as failing;
+    :Prevent PR from being merged;
+endif
+
+stop
+@enduml

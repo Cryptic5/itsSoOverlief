@@ -6,9 +6,11 @@ rectangle "Navigation" as navigation {
     usecase "Go to home page (game selection)" as home_page
     usecase "Go to account page" as account_page
     usecase "Go to statistics page" as statistics_page
+    usecase "Go to settings page" as settings_page
 }
 
 player --> home_page
 player --> account_page
 player --> statistics_page
+player --> settings_page
 @enduml

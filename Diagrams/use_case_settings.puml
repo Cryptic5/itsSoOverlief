@@ -1,0 +1,12 @@
+@startuml use_case_settings
+left to right direction
+:Authenticated Player: as player
+
+rectangle "Settings" as settings{
+    usecase "Privatize High Score" as private
+    usecase "Make High Score Public" as public
+}
+
+player --> private
+player --> public
+@enduml

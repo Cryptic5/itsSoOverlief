@@ -138,22 +138,22 @@ back-end processing and storage of user and game data.
     \begin{minipage}[b]{0.48\textwidth}
         \centering
         \textwidthdiagram{use_case_account.tex}
-        \caption{Account use case}
+        \caption{Account Use Case}
         \label{fig:use_case_account}
     \end{minipage}
     \hfil
     \begin{minipage}[b]{0.48\textwidth}
         \centering
-        \textwidthdiagram{use_case_game_selection.tex}
-        \caption{Game selection}
-        \label{fig:use_case_game_selection}
+        \textwidthdiagram{use_case_game_page.tex}
+        \caption{Game Page}
+        \label{fig:use_case_game_page}
     \end{minipage}
 \end{figure}
 
 Figure~\ref{fig:use_case_account} shows how players interact with the Account module.
 Unauthenticated players can log in or sign up, while authenticated players can log out.
 
-Figure~\ref{fig:use_case_game_selection} outlines two key actions: starting a game and
+Figure~\ref{fig:use_case_game_page} outlines two key actions: starting a game and
 changing the difficulty level. This design ensures that players have direct
 control over initiating gameplay and tailoring the challenge to their
 preferences.
@@ -162,14 +162,14 @@ preferences.
     \centering
     \begin{minipage}[b]{0.48\textwidth}
         \textwidthdiagram{use_case_high_score.tex}
-        \caption{High score module}
+        \caption{High Score Module}
         \label{fig:use_case_high_score}
     \end{minipage}
     \hfil
     \begin{minipage}[b]{0.48\textwidth}
         \centering
         \textwidthdiagram{use_case_navigation.tex}
-        \caption{Page navigation}
+        \caption{Page Navigation}
         \label{fig:use_case_navigation}
     \end{minipage}
 \end{figure}
@@ -184,6 +184,30 @@ Players can easily switch between the home page (which doubles as the game
 selection page), the account page, and the statistics page, ensuring a
 user-friendly and integrated browsing experience.
 
+\begin{figure}[H]
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \textwidthdiagram{use_case_game_selection.tex}
+        \caption{Game selection}
+        \label{fig:use_case_game_selection}
+    \end{minipage}
+    \hfil
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \textwidthdiagram{use_case_settings.tex}
+        \caption{Account Settings}
+        \label{fig:use_case_settings}
+    \end{minipage}
+\end{figure}
+Figure~\ref{fig:use_case_game_selection} illustrates the available games that
+players can choose from. Players can select one of four games: Aim Trainer,
+Math Game, Pair Up, or Sudoku. This selection allows users to navigate to
+a game page based on their preferences.
+
+Figure~\ref{fig:use_case_settings} shows the settings available to
+authenticated players. Users can choose to make their high scores public
+or keep them private. This feature provides control over personal game
+performance visibility, enhancing user privacy options.
 
 \section{Traceability}
 

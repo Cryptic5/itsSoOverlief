@@ -98,7 +98,15 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
 \section{Logical View}
 
 \subsection*{Class Diagram}
-    \includegraphics[width=\textwidth]{out/Diagrams/class_diagram/class_diagram.png}
+
+\begin{figure}[H]
+    \centering
+    \resizebox{0.8\textwidth}{!}
+        \input{class_diagram.latex}
+    \caption{Class diagram}
+    \label{fig:class_diagram}
+\end{figure}
+
 
 All frontend pages (AccountPage, StatisticsPage, SettingsPage, MathGamePage, SudokuGamePage, PairMatchingGamePage, AimTrainerPage) inherit from BlazerComponentBase. AccountPage and StatisticsPage provide interfaces for cognitive progress tracking. SettingsPage allows users to modify their privacy settings. The game-specific pages (MathGamePage, SudokuGamePage, PairMatchingGamePage, AimTrainerPage) are each designed for a unique game experience, and every gaming page utilizes a TimerService to consistently manage countdowns.
 

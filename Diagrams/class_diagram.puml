@@ -1,5 +1,7 @@
 @startuml
-' ======== Abstract Classes and Enumerations ========
+left to right direction
+'skinparam linetype polyline
+'skinparam linetype ortho
 enum Difficulty {
 Easy
 Medium
@@ -13,51 +15,33 @@ Multiplication
 Division
 }
 
-' ======== Data & Persistence ========
-abstract class DataPersistence {
-+save()
-+retrieve()
+abstract class BlazerComponentBase {
 }
 
-' ======== User/Account Domain ========
-abstract class User {
-+int userId
-+String username
-+String password
-+boolean isAuthorized
-+login()
-+logout()
-+signUp()
+class AccountPage extends BlazerComponentBase {
+  - string username 
+  + string accountUsername
+  + string accountPassword
+  + bool isUsernameNew
+  + bool incorectLogIn
+
+  + LogInEventAsync()
+  + LogOffEvent()
+  + SignUpEventAsync()
 }
 
-abstract class Player {
-+playGame()
-+viewStatistics()
-+togglePrivate()
+class User {
+  + int Id
+  + Username : string
+  + Password : string
+  + bool IsPrivate
+  + List<Score<MathGamePageData>> MathGamePageScores
+  + List<Score<SudokuData>> SudokuScores
+  + List<Score<AimTrainerData>> AimTrainerScores
+  + List<Score<PairUpData>> PairUpScores
 }
 
-User <|-- Player
-
-' ======== Application Session ========
-abstract class AppSession {
-+int sessionId
-+startSession()
-+endSession()
-+navigateToPage()
-}
-
-' ======== Application Pages ========
-abstract class AppPage {
-+loadPage()
-+renderContent()
-}
-
-abstract class GamePage extends AppPage {
-+startGame()
-+saveScore()
-}
-
-class MathGamePage extends GamePage {
+class MathGamePage extends BlazerComponentBase {
 -int score
 -string question
 -List<int> options
@@ -66,7 +50,7 @@ class MathGamePage extends GamePage {
 +checkAnswer(int option)
 }
 
-class SudokuGamePage extends GamePage {
+class SudokuGamePage extends BlazerComponentBase {
 -int[,] grid
 -int[,] solution
 -int elapsedTime
@@ -75,7 +59,7 @@ class SudokuGamePage extends GamePage {
 +checkSolution()
 }
 
-class PairMatchingGamePage extends GamePage {
+class PairMatchingGamePage extends BlazerComponentBase {
 -List<Card> cards
 -int matchedPairs
 -int mistakes
@@ -83,44 +67,53 @@ class PairMatchingGamePage extends GamePage {
 +checkSelectedCards()
 }
 
-class AimTrainerPage extends GamePage {
+class AimTrainerPage extends BlazerComponentBase {
 -int score
--(int x, int y) targetPosition
+-int x,
+-int y targetPosition
 -int moveDirection
 +onTargetClicked()
 +moveTarget()
 }
 
-class SettingsPage extends AppPage {
-  +bool IsPrivateActive
-  -TogglePrivate()
+class SettingsPage extends BlazerComponentBase {
+  - bool IsPrivateActive
+  - TogglePrivate()
 }
 
-
-' ======== Statistics/High Score Domain ========
-abstract class StatisticsPage extends AppPage {
-+viewShortStats()
-+viewTimeline()
-+viewStatsByDifficulty()
-+viewGraph()
+class UserScoreDto <T: Class> {
+  + string Username
+  + bool IsPrivate
+  + DateTime Timestamp
+  + T GameData 
+  + ShowOtherDateTimeFormat()
 }
 
-class ScoreChart {
-+renderChart()
+class StatisticsPage extends BlazerComponentBase {
+  + Dictionary<string, List<UserScoreDto>> GameScores 
+  + Dictionary<string, int> GamePlayedCounts
+  + Dictionary<string, GameScore> GameHighscores
+  + Dictionary<string, GameScore> GameAllTimeAverages
+  + Dictionary<string, List<AverageScoreDto>> GameAverageLast7Days
+
+  - ToggleGameInfo()
+  - SetActiveDifficulty()
+  - SetActiveSizeSudoku()
+  + LoadAllGameScoresAsync()
+  + LoadGameScoresAsync()
+  + LoadAllGameDatasetsAsync()
+  + LoadGameDatasetsAsync()
 }
 
-class TimeScoreChart {
-+renderTimeChart()
+class AverageScoreDto {
+  + Date : DateTime
+  + Score : GameScore
 }
 
-StatisticsPage -- ScoreChart
-StatisticsPage -- TimeScoreChart
+AverageScoreDto <.. StatisticsPage
+AverageScoreDto <.. AccountScoreController
+AccountScoreController ..> UserScoreDto
 
-
-AppSession o-- AppPage
-AppSession o-- Player
-
-' ======== Timer Service ========
 class TimerService {
 +int RemainingTime
 +Start()
@@ -128,17 +121,6 @@ class TimerService {
 +OnTick()
 }
 
-GamePage *-- TimerService
-
-
-' ======== Services (Subset) ========
-abstract class AuthService {
-+authorize()
-+register()
-}
-User ..> AuthService
-
-' ======== Controllers ========
 class AccountScoreController <<Controller>> {
 +GetGameScores()
 +GetGameHighscore()
@@ -147,7 +129,6 @@ class AccountScoreController <<Controller>> {
 +GetGameAverageScoreLast7Days()
 }
 
-AccountScoreController ..> DataPersistence
 
 class AimTrainerController <<Controller>> {
 +SaveScoreAsync()
@@ -187,18 +168,162 @@ class UserController <<Controller>> {
 +GetPrivateAsync()
 }
 
-' ======== Relationships for Controllers ========
-AuthService ..> UserController
-MathGamePage ..> MathGameController
-PairMatchingGamePage ..> PairUpController
-SudokuGamePage ..> SudokuController
-AimTrainerPage ..> AimTrainerController
-SettingsPage ..> UserController
-StatisticsPage ..> AccountScoreController
+class AccountScoreService {
+  - int lastGamesCount
+  - IScoreRepository repository
 
-AimTrainerController ..> DataPersistence
-MathGameController ..> DataPersistence
-PairUpController ..> DataPersistence
-SudokuController ..> DataPersistence
-UserController ..> DataPersistence
+  + AccountScoreService()
+  - Task<List<UserScoreDto<T>>> GetUserSpecificScores<T>()
+  + Task<List<UserScoreDto<T>>> GetUserScores<T>()
+  + Task<GameScore> GetHighscore<T>()
+  + Task<GameScore> GetAllTimeAverageScore<T>()
+  + Task<int> GetMatchesPlayed<T>()
+  + Task<List<AverageScoreDto>> GetAverageScoreLast7Days<T>()
+}
+
+class AimTrainerService {
+  - IScoreRepository _scoreRepository
+
+  + AimTrainerService()
+  + Task AddScoreToDbAsync()
+  + Task<UserScoreDto<AimTrainerData>> GetUserHighscoreAsync()
+  + Task<List<UserScoreDto<AimTrainerData>>> GetTopScoresAsync()
+}
+
+AimTrainerService --o AimTrainerController
+AimTrainerService ..> UserScoreDto
+
+class PairUpService {
+  - IScoreRepository _scoreRepository
+
+  + PairUpService()
+  + Task AddScoreToDbAsync()
+  + Task<UserScoreDto<PairUpData>> GetUserHighscoreAsync()
+  + Task<List<UserScoreDto<PairUpData>>> GetTopScoresAsync()
+}
+
+class SudokuService {
+  - IntVar[,] _possibleGrid
+  - SolutionCollector _solutionCollector
+
+  + GetUserHighscoreAsync()
+  + GetTopScoresAsync()
+  + HideNumbers()
+  + GenerateSolvedSudoku()
+  - SolveSudoku()
+  - IsValidMove()
+}
+
+class UserService {
+  - UserTrackingService _userTrackingService
+
+  + UserService()
+  + CreateUserAsync()
+  + LogInToUserAsync()
+  + LogOffFromUser()
+  + GetUsernamesAsync()
+  + ChangePrivateAsync()
+  + GetPrivateAsync()
+}
+
+UserService --o UserController
+
+class UserTrackingService {
+  - ConcurrentDictionary<string, DateTime> _activeUsers
+
+  + AddOrUpdateUser()
+  + RemoveUser()
+  + GetActiveUsers()
+}
+
+class MathGameService {
+  - IMathCalculationService _mathCalculationService
+  - IMathGenerationService _mathGenerationService
+  + int Answer
+  + List<int> numbers
+  + List<Operation> operations
+
+  + MathGameService()
+  + GenerateQuestion()
+  + CheckAnswer()
+  + GenerateOptions()
+  - BuildQuestionToString()
+}
+
+class ScoreRepository {
+  - UserDbContext _userDbContext
+
+  + ScoreRepository()
+  + AddScoreToUserAsync()
+  + GetHighscoreFromUserAsync()
+  + GetAllScoresAsync()
+}
+
+class UserRepository {
+  - UserDbContext _userDbContext
+
+  + UserRepository()
+  + Task CreateUserAsync()
+  + Task<List<User>> GetAllUsersAsync()
+  + Task<bool> ValidateUserAsync()
+  + Task ChangePrivateAsync()
+  + Task<bool> GetPrivateAsync()
+}
+
+
+PairUpService --o PairUpController
+PairUpService ..> UserScoreDto
+
+
+UserTrackingService --o UserService
+
+MathGameService --o MathGameController
+
+
+ScoreRepository --o AccountScoreService
+ScoreRepository --o AimTrainerService
+ScoreRepository --o PairUpService
+ScoreRepository --o SudokuService
+ScoreRepository --o MathGameService
+
+
+UserRepository --o UserService
+
+
+SudokuService --o SudokuController
+SudokuService ..> UserScoreDto
+
+AccountScoreService --o AccountScoreController
+AccountScoreService ..> UserScoreDto
+
+SettingsPage ..> User
+
+Difficulty --o MathGamePage
+Difficulty --o SudokuGamePage
+Difficulty --o PairMatchingGamePage
+Difficulty --o AimTrainerPage
+Operation --o MathGamePage
+
+User <.. AccountPage
+UserController ..> User
+
+UserScoreDto <.. StatisticsPage
+
+MathGamePage ..> UserScoreDto
+SudokuGamePage ..> UserScoreDto
+PairMatchingGamePage ..> UserScoreDto
+AimTrainerPage ..> UserScoreDto
+
+
+UserScoreDto <.. MathGameController
+UserScoreDto <.. SudokuController
+UserScoreDto <.. PairUpController  
+UserScoreDto <.. AimTrainerController
+
+
+AimTrainerPage *-- TimerService
+SudokuGamePage *-- TimerService
+PairMatchingGamePage *-- TimerService
+MathGamePage *-- TimerService
+
 @enduml

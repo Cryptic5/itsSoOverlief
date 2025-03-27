@@ -29,6 +29,7 @@
 \usepackage{etoolbox} % Adds '\clearpage' to every '\section command' (newpage).
 \pretocmd{\section}{\clearpage}{}{} 
 
+\newcommand{\inputdiagram}[1]{\input{Diagrams/out/#1}}
 
 %-----------------------
 % Set pdf information and add title, fill in the fields
@@ -112,6 +113,9 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
 \section{Physical View}
 
 \subsection*{Deployment Diagram}
+\resizebox{\textwidth}{!}{
+    \inputdiagram{deployment_diagram.tex}
+}
 ...Deployment diagram
 
 \section{Use Case View}

@@ -9,7 +9,6 @@
 
 
 \usepackage[pdftex]{graphicx} % Required for including pictures
-\usepackage[swedish]{babel} % Swedish translations
 \usepackage[pdftex,linkcolor=black,pdfborder={0 0 0}]{hyperref} % Format links for pdf
 \usepackage{calc} % To reset the counter in the document after title page
 \usepackage{enumitem} % Includes lists
@@ -25,11 +24,17 @@
 \usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
 
 \usepackage{plantuml}
+\usepackage{float}
+\usepackage{indentfirst}
+\usepackage{subcaption}
 
 \usepackage{etoolbox} % Adds '\clearpage' to every '\section command' (newpage).
 \pretocmd{\section}{\clearpage}{}{} 
 
 \newcommand{\inputdiagram}[1]{\input{Diagrams/out/#1}}
+\newcommand{\textwidthdiagram}[2][1]{%
+  \resizebox{#1\textwidth}{!}{\inputdiagram{#2}}%
+}
 
 %-----------------------
 % Set pdf information and add title, fill in the fields
@@ -111,15 +116,75 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
 ...Sequence diagram
 
 \section{Physical View}
+\begin{figure}[H]
+    \centering
+    \textwidthdiagram{deployment_diagram.tex}
+    \caption{Deployment diagram}
+    \label{fig:deployment_diagram}
+\end{figure}
 
-\subsection*{Deployment Diagram}
-\resizebox{\textwidth}{!}{
-    \inputdiagram{deployment_diagram.tex}
-}
-...Deployment diagram
+Figure~\ref{fig:deployment_diagram} illustrates the architecture of the web application,
+which consists of a client-side Blazor WebAssembly (WASM) frontend and a
+backend hosted on an Azure server. The client browser executes the .NET WASM
+runtime, running Client.dll as an executable. The backend operates on a Linux
+environment within Azure, where the .NET runtime hosts Server.dll. Data is
+persisted using an SQLite database. Communication between the client and
+server occurs over HTTPS, ensuring secure data transmission. This design
+enables a lightweight client while leveraging cloud infrastructure for
+backend processing and storage of user and game data.
 
 \section{Use Case View}
-...Use cases
+
+\begin{figure}[H]
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \textwidthdiagram{use_case_account.tex}
+        \caption{Account use case}
+        \label{fig:use_case_account}
+    \end{minipage}
+    \hfil
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \textwidthdiagram{use_case_game_selection.tex}
+        \caption{Game selection}
+        \label{fig:use_case_game_selection}
+    \end{minipage}
+\end{figure}
+
+Figure~\ref{fig:use_case_account} shows how players interact with the Account module.
+Unauthenticated players can log in or sign up, while authenticated players can log out.
+
+Figure~\ref{fig:use_case_game_selection} outlines two key actions: starting a game and
+changing the difficulty level. This design ensures that players have direct
+control over initiating gameplay and tailoring the challenge to their
+preferences.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.48\textwidth}
+        \textwidthdiagram{use_case_high_score.tex}
+        \caption{High score module}
+        \label{fig:use_case_high_score}
+    \end{minipage}
+    \hfil
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \textwidthdiagram{use_case_navigation.tex}
+        \caption{Page navigation}
+        \label{fig:use_case_navigation}
+    \end{minipage}
+\end{figure}
+
+Figure~\ref{fig:use_case_high_score} details various ways for authenticated players to review game performance. Users
+can view short game statistics, detailed graphs, timelines of past games, and
+statistics filtered by difficulty. The module provides multiple perspectives to
+help players track and analyze their performance.
+
+Figure~\ref{fig:use_case_navigation} maps out the main paths for navigating through the website.
+Players can easily switch between the home page (which doubles as the game
+selection page), the account page, and the statistics page, ensuring a
+user-friendly and integrated browsing experience.
+
 
 \section{Traceability}
 

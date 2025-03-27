@@ -118,20 +118,19 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
 \section{Physical View}
 \begin{figure}[H]
     \centering
-    \textwidthdiagram{deployment_diagram.tex}
+    \textwidthdiagram[0.8]{deployment_diagram.tex}
     \caption{Deployment diagram}
     \label{fig:deployment_diagram}
 \end{figure}
 
 Figure~\ref{fig:deployment_diagram} illustrates the architecture of the web application,
-which consists of a client-side Blazor WebAssembly (WASM) frontend and a
-backend hosted on an Azure server. The client browser executes the .NET WASM
-runtime, running Client.dll as an executable. The backend operates on a Linux
+which consists of a client-side Blazor WebAssembly (WASM) front-end and a back-end hosted on an Azure server. The client browser executes the .NET WASM
+runtime, running Client.dll as an executable. The backend operates in a Linux
 environment within Azure, where the .NET runtime hosts Server.dll. Data is
 persisted using an SQLite database. Communication between the client and
 server occurs over HTTPS, ensuring secure data transmission. This design
 enables a lightweight client while leveraging cloud infrastructure for
-backend processing and storage of user and game data.
+back-end processing and storage of user and game data.
 
 \section{Use Case View}
 

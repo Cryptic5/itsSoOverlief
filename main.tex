@@ -92,7 +92,7 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
 \end{titlepage}
 
 \section{Context}
- Some text and ideas are mentioned...
+ Very EPIC text and ideas...
  ??????
 
 \section{Logical View}
@@ -120,7 +120,32 @@ TODO: Mykolas
 
 \subsection*{Package Diagram}
 TODO: Augustas
-...Package diagram
+\begin{figure}[H]
+    \centering
+    \textwidthdiagram{united_package.latex}
+    \caption{United Package Diagram}
+    \label{fig:united_package}
+\end{figure}
+
+This diagram provides a high-level architectural overview of the entire codebase. It cleanly divides the system into Frontend, Backend, and Shared layers. The Frontend and Backend packages are further broken down into their core areas. Importantly, the Shared package highlights the common elements like data models, interfaces, and enumerations that are utilized across both the frontend and backend, ensuring consistency and reducing redundancy. The arrows indicate dependencies between these major components, illustrating the flow of interaction and data.
+
+\begin{figure}[H]
+    \centering
+    \textwidthdiagram{frontend_package.latex}
+    \caption{Frontend Package Diagram}
+    \label{fig:frontend_package}
+\end{figure}
+
+This diagram illustrates the modular organization of the frontend application. It clearly separates concerns into reusable Components for UI elements, higher-level UI Modules representing specific screens or functionalities, and a Services Package that handles data fetching, state management, and interaction with the backend.
+
+\begin{figure}[H]
+    \centering
+    \textwidthdiagram{backend_package.latex}
+    \caption{Backend Package Diagram}
+    \label{fig:backend_package}
+\end{figure}
+
+This diagram delves into the internal structure of the backend system. It showcases a well-defined separation of responsibilities. Game Modules encapsulate the specific logic for each game. Repositories handle data persistence, abstracting away the underlying database interactions defined in the Database Context. The Statistics package focuses on calculating and managing game statistics. Finally, the Game Package seems to provide a more general layer for game management operations, potentially orchestrating interactions between other backend components. The dependencies clearly show how these packages interact to deliver the backend functionality.
 
 \subsection*{Component Diagram}
 TODO: Augustas
@@ -266,7 +291,69 @@ authenticated players. Users can choose to make their high scores public
 or keep them private. This feature provides control over personal game
 performance visibility, enhancing user privacy options.
 
+
+
 \section{Traceability}
+\begin{table}[H]
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{1}{|c|}{\textbf{User Needs}}    & \multicolumn{1}{|c|}{\textbf{Requirements}}                   \\ \hline
+\multicolumn{2}{|c|}{\textbf{Players (Primary stakeholder)}}                                           \\ \hline
+Ease of Access (1.a)                         & F 1.a (Web-based application)                \\
+Variety of Games (1.b)                       & F 2.b (Display a variety of cognitive games), F 3 (Games) \\
+User Account (1.c)                           & F 2.a (Allow users to log in or sign up)     \\
+Progress Tracking (1.d)                      & F 4.e (Scoreboard for tracking progress)     \\
+Ranking System (1.e)                         & F 4.g (Update leaderboards after game)       \\
+Personalization (1.f)                        & F 4.b (Difficulty settings for games)        \\
+User-Friendly Interface (1.g)                & F 2 (Main Menu Page), NF 4 (Compatibility)   \\
+Game Description (1.h)                       & F 4.a (Each game must have a description)    \\
+\hline
+\multicolumn{2}{|c|}{\textbf{Developers (Primary Stakeholders)}}                                       \\
+\hline
+\colorbox{yellow}{Clear Requirements \& Design (2.a)}           & \colorbox{yellow}{F 5.a (Functional \& technical specifications)} \\
+\colorbox{yellow}{Documentation (2.b)   }                       & \colorbox{yellow}{F 5.b (Code docs \& technical docs)  }        \\
+Testing Environment (2.c)                   & 
+F 5.c (Testing setup with CI integration)    \\
+\hline
+\multicolumn{2}{|c|}{\textbf{Administrators (Primary Stakeholders)}}                                   \\
+\hline
+User Management (3.a)                 &  F 2.c (Privacy settings for leaderboard)    \\
+\colorbox{yellow}{Game and Content Management (3.b)}            & \colorbox{yellow}{F 4 (User Experience Enhancements)  }         \\
+\colorbox{yellow}{System Monitoring (3.c)}   & \colorbox{yellow}{NF 2.b (Logging \& real-time monitoring), NF 3.a (Security)} \\
+\hline
+\multicolumn{2}{|c|}{\textbf{Shareholders / Investors (Primary Stakeholders)}}                         \\
+\hline
+\colorbox{yellow}{Profitability \& Growth (4.a) }               & \colorbox{yellow}{NF 1 (Performance requirements)  }            \\
+\colorbox{yellow}{Project Stability (4.b) }                     & \colorbox{yellow}{NF 2.a (90\% system uptime)}                  \\
+Reports and Statistics (4.c)                 & F 4.e (User performance tracking)            \\
+\hline
+\multicolumn{2}{|c|}{\textbf{Partners - Educational Institutions (Secondary Stakeholders)}}            \\
+\hline
+Accessibility \& Reliability (5.a)           & NF 4 (Compatibility), NF 1 (Performance)     \\
+Data Analysis (5.b)                          & F 4.e (Tracking progress \& game statistics) \\
+Integration into Learning Process (5.c)      & F 4.a (Descriptions of game's benefits)      \\
+\hline
+\multicolumn{2}{|c|}{\textbf{National Institute of Standards and Technology (Secondary Stakeholders)}} \\
+\hline
+\colorbox{yellow}{Password Security \& Encryption (6.a)}        & \colorbox{yellow}{NF 3 (Security)  }                            \\
+\hline
+\multicolumn{2}{|c|}{\textbf{Compliance with local laws - GDPR (Secondary Stakeholders)}}              \\
+\hline
+\colorbox{yellow}{Data Protection Principles (7.a) }             &\colorbox{yellow}{ NF 5.d (Data Protection Principles) }         \\
+\colorbox{yellow}{Consent Management (7.b)   }                  & \colorbox{yellow}{NF 5.e (Consent Management)  }                \\
+\colorbox{yellow}{Data Subject Rights (7.c)  }                  & \colorbox{yellow}{NF 5.f (Data Subject Rights) }                \\
+\hline
+\end{tabular}
+
+\vspace{8pt} % value to increase the gap
+
+\textbf{F (Functional Requirements), NF (Non-Functional Requirements)}
+
+\vspace{8pt} % value to increase the gap
+
+\textbf{Note:} The current system architecture does not follow or implement user needs and requirements highlighted in yellow. All other unmarked requirements and user needs are either mentioned in the system or have some form of implementation that can be checked. Unmarked columns are mentioned in the system architecture diagrams.
+\end{table}
+
 
 %\lipsum[1-3]
 

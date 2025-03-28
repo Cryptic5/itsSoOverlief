@@ -1,0 +1,9 @@
+@startuml math_state
+state "Math Game" as MathGame {
+    [*] --> QuestionDisplayed
+    QuestionDisplayed --> ValidatingAnswer : submit answer
+    ValidatingAnswer --> QuestionDisplayed : generate new question[time_left>0]
+    ValidatingAnswer --> [*] : end game[time_left<=0]
+    QuestionDisplayed --> [*] : end game[time_left<=0]
+}
+@enduml

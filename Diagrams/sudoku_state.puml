@@ -1,0 +1,13 @@
+@startuml sudoku_state
+state "Sudoku" as Sudoku {
+    [*] --> Idle
+    Idle --> CellSelected : select cell
+    CellSelected --> CellSelected : select cell
+    CellSelected --> Idle : deselect cell
+    CellSelected --> Idle : enter value
+    CellSelected --> ValidatingBoard : submit
+    Idle --> ValidatingBoard : submit
+    ValidatingBoard --> Idle : redraw[board invalid]
+    ValidatingBoard --> [*] : end game[board valid]
+}
+@enduml

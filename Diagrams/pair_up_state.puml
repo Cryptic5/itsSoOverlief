@@ -1,0 +1,10 @@
+@startuml pair_up_state
+state "Pair Up" as PairUpState {
+    [*] --> CardsShown
+    CardsShown --> FirstCardSelected : select card
+    FirstCardSelected --> SecondCardSelected : select second card
+    SecondCardSelected --> MatchEvaluation : check match
+    MatchEvaluation --> CardsShown : continue[unpaired cards left]
+    MatchEvaluation --> [*] : end game[all pairs matched]
+}
+@enduml

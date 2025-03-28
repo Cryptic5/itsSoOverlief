@@ -91,13 +91,15 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
     
 \end{titlepage}
 
+\tableofcontents
+
 \section{Context}
  Some text and ideas are mentioned...
  ??????
 
 \section{Logical View}
 
-\subsection*{Class Diagram}
+\subsection{Class Diagram}
 
 \begin{figure}[H]
     \centering
@@ -113,24 +115,132 @@ Services such as MathGameService, SudokuService, AimTrainerService, PairUpServic
 
 Controllers including AccountScoreController, AimTrainerController, MathGameController, PairUpController, SudokuController, and UserController act as intermediaries, exposing API endpoints to connect the front end with the back-end services. Data is consistently exchanged between the front end and back end using Data Transfer Objects (DTOs) such as UserScoreDto<T> and AverageScoreDto. 
 
-\subsection*{State Diagram}
-TODO: Mykolas
+\subsection{Local User States}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.59\textwidth}
+        \centering
+        \textwidthdiagram{score_fetching_state.tex}
+        \caption{Frontend Score Fetching}
+        \label{fig:score_fetching_state}
+    \end{minipage}
+    \hfil
+    \begin{minipage}[b]{0.4\textwidth}
+        \centering
+        \textwidthdiagram{user_authentication_state.tex}
+        \caption{User Authentication State}
+        \label{fig:user_authentication_state}
+    \end{minipage}
+\end{figure}
+
+Figure~\ref{fig:score_fetching_state} outlines the asynchronous score
+retrieval process happening on the application frontend. This state is kept
+when navigating to a game page while authenticated. The state enters in a
+"Loading Scores" state where a background call (GetUserHighScoreAsync())
+fetches data. Depending on the outcome, the state branches into one
+of three paths: it moves to "No Scores Found" if no score is returned,
+"Encountered Error" if an error occurs, or "Showing Scores" if the scores
+are successfully loaded. The User is shown different UI elements based on
+the state. This structure ensures that the application handles different
+scenarios gracefully while providing clear feedback to the user.
+
+The User Authentication diagram presented in
+Figure~\ref{fig:user_authentication_state} defines the different possible
+states of user authentication. The user begins in an "Unauthenticated" state. When a
+user attempts to log in, the system remains in the same state if the login
+fails, or it transitions to the "Authenticated" state upon a successful
+login. A logoff action then reverts the system back to the "Unauthenticated"
+state. The defined transitions make asynchronous calls to the Auth API privided
+by our back-end solution. This model clearly delineates the transitions
+between being logged in and logged out, ensuring that the system maintains
+a secure and predictable user session management process.
+
+\subsection{Game States}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \textwidthdiagram{math_state.tex}
+        \caption{Math Game State Representation}
+        \label{fig:math_state}
+    \end{minipage}
+    \hfil
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \textwidthdiagram{aim_trainer_state.tex}
+        \caption{Aim Trainer State Representation}
+        \label{fig:aim_trainer_state}
+    \end{minipage}
+\end{figure}
+
+In Figure~\ref{fig:aim_trainer_state} we model our \textit{Aim Training} game. The
+game starts by displaying a target, and upon the user's click, it transitions
+to a state where the input is processed. If there is remaining time (i.e.,
+[time\_left>0]), a new target is generated, looping back to the display state;
+otherwise, the game ends. The \textit{ProcessingInput} state handles updating both
+the failure count (if the target was missed) and the score.
+
+Figure~\ref{fig:math_state} represents our arithmetic based \textit{Math Game}. It
+begins by displaying an equation to the user. When an answer is submitted, the
+system transitions to a validation state. The validation state is responsible
+for both making an asynchronous call to the back-end for answer validation
+and increasing the kept score if the answer was valid. If time remains,
+a new question is generated and the process repeats; if not, the game
+terminates. Modeling our game in this way highlights the cyclic gameplay
+loop that emphasizes both continuous engagement and time-bound gameplay,
+ensuring the game session concludes when the allotted time is exhausted.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \textwidthdiagram{sudoku_state.tex}
+        \caption{Sudoku State Representation}
+        \label{fig:sudoku_state}
+    \end{minipage}
+    \hfil
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \textwidthdiagram{pair_up_state.tex}
+        \caption{Pair Up State Representation}
+        \label{fig:pair_up_state}
+    \end{minipage}
+\end{figure}
+
+Figure~\ref{fig:sudoku_state} (The \textit{Sudoku} state diagram) captures
+the interactive elements of playing our \textit{Sudoku} game. Initially, the board
+is idle, waiting for user interaction. When a cell is selected, the state
+changes, allowing the user to either deselect the cell, select another
+cell, input a value, or submit the board for validation. Upon submission,
+the system checks the board (by an asynchronous call to our API): if the
+board is invalid, it redraws and returns to the idle state; if the board
+is valid, the game ends. These states capture the essential user interactions
+and decision points necessary for the logic puzzle.
+
+The \textit{Pair Up} diagram (Figure~\ref{fig:pair_up_state}) details the
+states of our memory-based matching game. The game starts with all cards being
+shown to the user. The user selects his first card (which the user cannot
+unselect), then his second card, prompting the system to evaluate whether the
+selected pair matches. If there are still unpaired cards remaining, the game cycles
+back to display the cards; if all pairs are successfully matched,
+the game ends. This design effectively captures the iterative nature of this
+game while clearly defining the conditions for continuation and termination.
 
 \section{Development View}
 
-\subsection*{Package Diagram}
+\subsection{Package Diagram}
 TODO: Augustas
 ...Package diagram
 
-\subsection*{Component Diagram}
+\subsection{Component Diagram}
 TODO: Augustas
 ...Component diagram
 
 \section{Process View}
 
-\subsection*{Sequence Diagram}
+\subsection{Sequence Diagram}
 TODO: Mykolas
-\subsection*{Activity Diagram}
+\subsection{Activity Diagram}
 TODO: Mykolas
 
 \section{Physical View}
@@ -192,6 +302,7 @@ to production.
 \section{Use Case View}
 
 \begin{figure}[H]
+    \centering
     \begin{minipage}[b]{0.48\textwidth}
         \centering
         \textwidthdiagram{use_case_account.tex}

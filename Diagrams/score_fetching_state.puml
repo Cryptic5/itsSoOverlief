@@ -1,0 +1,13 @@
+@startuml score_fetching_state
+skinparam linetype ortho
+state "Score Fetching" as Fetching {
+    state "Loading Scores" as Loading
+    state "No Scores Found" as Not_Found
+    state "Showing scores" as Showing_Scores
+    state "Encountered Error" as Encountered_Error
+    [*] --> Loading : begin loading / GetUserHighScoreAsync()
+    Loading --> Not_Found : received no score
+    Loading --> Encountered_Error : received error
+    Loading --> Showing_Scores : scores loaded / ShowScores()
+}
+@enduml

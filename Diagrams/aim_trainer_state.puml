@@ -1,0 +1,9 @@
+@startuml aim_trainer_state
+state "Aim Trainer" as AimTrainer {
+    [*] --> TargetDisplayed
+    TargetDisplayed --> ProcessingInput : on click
+    ProcessingInput --> TargetDisplayed : generate target[time_left>0]
+    ProcessingInput --> [*] : end game[time_left<=0]
+    TargetDisplayed --> [*] : end game[time_left<=0]
+}
+@enduml

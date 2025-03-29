@@ -29,8 +29,8 @@
 \usepackage{indentfirst}
 \usepackage{subcaption}
 
-\usepackage{etoolbox} % Adds '\clearpage' to every '\section command' (newpage).
-\pretocmd{\section}{\clearpage}{}{} 
+%\usepackage{etoolbox} % Adds '\clearpage' to every '\section command' (newpage).
+%\pretocmd{\section}{\clearpage}{}{} 
 
 \newcommand{\inputdiagram}[1]{\input{Diagrams/out/#1}}
 \newcommand{\textwidthdiagram}[2][1]{%
@@ -93,6 +93,7 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
 \end{titlepage}
 
 \tableofcontents
+\newpage
 
 \section{Context}
 Our web-based platform offers a number of cognitive games that are designed to test and enhance skills such as memory, attention, reaction time, and problem-solving. Users can access the system directly through a browser without needing to install any software or mobile apps. The platform provides customizable game difficulties and tracks user performance over time. While engaging, the platform prioritizes measurable cognitive improvement over entertainment.
@@ -120,26 +121,22 @@ Our web-based platform offers a number of cognitive games that are designed to t
 
 
 
-
-
 \section{Logical View}
 
 \subsection{Class Diagram}
 
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=0.95\paperwidth,center}
-        \inputdiagram{class_diagram.tex}
-    \end{adjustbox}
+    \textwidthdiagram{class_diagram.latex}
     \caption{Class Diagram}
-    \label{fig:class_diagram}
+    \label{fig:Class Diagram}
 \end{figure}
 
-Figure~\ref{fig:class_diagram} depicts all frontend pages (AccountPage, StatisticsPage, SettingsPage, MathGamePage, SudokuGamePage, PairMatchingGamePage, AimTrainerPage) that inherit from BlazerComponentBase. AccountPage and StatisticsPage provide interfaces for tracking cognitive progress. SettingsPage allows users to modify their privacy settings. The game-specific pages (MathGamePage, SudokuGamePage, PairMatchingGamePage, AimTrainerPage) are each designed for a unique game experience, and every gaming page utilizes a TimerService to consistently manage countdowns.
+Figure~\ref{fig:Class Diagram} illustrates the structure of the application, dividing it into client-side and server-side components. On the client side, frontend pages inherit from BlazerComponentBase, including AccountPage and StatisticsPage for tracking cognitive progress, SettingsPage for managing privacy settings, and game-specific pages like MathGamePage, SudokuGamePage, PairMatchingGamePage, and AimTrainerPage, all of which utilize TimerService for countdowns. Most .cs files related to these pages are located in the Client/Pages folder, TimerService is located in Client/Services.
 
-Services such as MathGameService, SudokuService, AimTrainerService, PairUpService, AccountScoreService, and UserService encapsulate the application's business logic and handle data operations. Repositories like ScoreRepository and UserRepository are responsible for interacting with the database.
+On the server side, controllers in the 'Server/Controllers' folder, including AccountScoreController, MathGameController, and others, expose API endpoints. Business logic is handled by services such as MathGameService, SudokuService, AimTrainerService, PairUpService, AccountScoreService, and UserService, all located in the 'Server/Services folder'. Repositories like ScoreRepository and UserRepository in the 'Server/Repositories' folder manage database interactions.
 
-Controllers including AccountScoreController, AimTrainerController, MathGameController, PairUpController, SudokuController, and UserController act as intermediaries, exposing API endpoints to connect the front end with the back-end services. Data is consistently exchanged between the front end and back end using Data Transfer Objects (DTOs) such as UserScoreDto<T> and AverageScoreDto. 
+Shared resources include models from the 'Shared/Models' folder and Data Transfer Objects (DTOs) such as UserScoreDto<T> and AverageScoreDto, which facilitate communication between the frontend and backend.
 
 \subsection{Local User States}
 \begin{figure}[H]
@@ -252,6 +249,13 @@ back to display the cards; if all pairs are successfully matched,
 the game ends. This design effectively captures the iterative nature of this
 game while clearly defining the conditions for continuation and termination.
 
+
+
+
+
+
+
+
 \section{Development View}
 
 \subsection{Package Diagram}
@@ -282,7 +286,8 @@ Figure~\ref{fig:frontend_package} illustrates the modular organization of the fr
 \end{figure}
 
 Figure~\ref{fig:backend_package} delves into the internal structure of the backend system. It showcases a well-defined separation of responsibilities. Game Modules encapsulate the specific logic for each game. Repositories handle data persistence, abstracting away the underlying database interactions defined in the Database Context. The Statistics package focuses on calculating and managing game statistics. Finally, the Game Package seems to provide a more general layer for game management operations, potentially orchestrating interactions between other backend components. The dependencies clearly show how these packages interact to deliver the backend functionality.
-\pagebreak
+
+
 \subsection{Component Diagram}
 TODO: Augustas
 \begin{figure}[H]

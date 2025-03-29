@@ -1,0 +1,75 @@
+@startuml
+hide footbox
+participant "Aim Trainer Page" as Page
+participant "AimTrainerService(C)" as ClientService
+participant AimTrainerController
+participant "AimTrainerService(S)" as ServerService
+participant ScoreRepository
+
+note over ClientService, ServerService
+    These services have the same
+    name in their corresponding packages.
+    Here (C) denotes the service from the Client package
+    and (S) denotes the service from the Server package
+end note
+
+-> Page : "Game End" Event
+activate Page
+Page -> ClientService : SaveScoreAsync()
+activate ClientService
+ClientService -> ClientService : Wrap Score In UserScoreDto
+
+ClientService -> AimTrainerController : SaveScoreAsync()
+activate AimTrainerController
+
+note top
+The service makes an async
+HTTP POST request with the DTO
+end note
+
+AimTrainerController -> ServerService : AddScoreToDbAsync()
+activate ServerService
+
+ServerService -> ServerService : Unwrap DTO
+ServerService -> ScoreRepository : AddScoreToUserAsync()
+activate ScoreRepository
+
+ScoreRepository -> UserDbContext : Find User
+activate UserDbContext
+
+alt found user
+    ScoreRepository <-- UserDbContext : user
+    ScoreRepository -> UserDbContext : Add Score To Db
+    alt exception
+        ScoreRepository <-- UserDbContext : Exception
+        ServerService <-- ScoreRepository : Exception
+        note over AimTrainerController
+        The Controller
+        decides based on the
+        exception which HTTP
+        code to send.
+        end note
+        AimTrainerController <-- ServerService : Exception
+        ClientService <-- AimTrainerController : HTTP 500
+    else wrote successfully
+        ScoreRepository <-- UserDbContext : OK
+        ServerService <-- ScoreRepository : OK
+        AimTrainerController <-- ServerService : OK
+        ClientService <-- AimTrainerController : HTTP 200
+    end
+else user not found
+    ScoreRepository <-- UserDbContext : null
+    deactivate UserDbContext
+    ServerService <-- ScoreRepository : Exception
+    deactivate ScoreRepository
+    AimTrainerController <-- ServerService : Exception
+    deactivate ServerService
+    ClientService <-- AimTrainerController : HTTP 400
+    deactivate AimTrainerController
+end
+
+Page <-- ClientService : result
+deactivate ClientService
+deactivate Page
+@enduml
+

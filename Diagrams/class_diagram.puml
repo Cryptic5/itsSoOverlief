@@ -327,4 +327,12 @@ SudokuGamePage *-- TimerService
 PairMatchingGamePage *-- TimerService
 MathGamePage *-- TimerService
 
+skinparam legendBackgroundColor #ffffff
+legend
+    |= Visibility | Field Icon | Method Icon |
+    | private     | <img:icons/private-field.png> | <img:icons/private-method.png> |
+    | protected   | <img:icons/protected-field.png> | <img:icons/protected-method.png> |
+    | package-private | <img:icons/package-private-field.png> | <img:icons/package-private-method.png> |
+    | public      | <img:icons/public-field.png> | <img:icons/public-method.png> |
+endlegend
 @enduml

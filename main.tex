@@ -109,7 +109,7 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
 \end{figure}
 
 
-All frontend pages (AccountPage, StatisticsPage, SettingsPage, MathGamePage, SudokuGamePage, PairMatchingGamePage, AimTrainerPage) inherit from BlazerComponentBase. AccountPage and StatisticsPage provide interfaces for cognitive progress tracking. SettingsPage allows users to modify their privacy settings. The game-specific pages (MathGamePage, SudokuGamePage, PairMatchingGamePage, AimTrainerPage) are each designed for a unique game experience, and every gaming page utilizes a TimerService to consistently manage countdowns.
+Figure~\ref{fig:class_diagram} depicts all frontend pages (AccountPage, StatisticsPage, SettingsPage, MathGamePage, SudokuGamePage, PairMatchingGamePage, AimTrainerPage) that inherit from BlazerComponentBase. AccountPage and StatisticsPage provide interfaces for tracking cognitive progress. SettingsPage allows users to modify their privacy settings. The game-specific pages (MathGamePage, SudokuGamePage, PairMatchingGamePage, AimTrainerPage) are each designed for a unique game experience, and every gaming page utilizes a TimerService to consistently manage countdowns.
 
 Services such as MathGameService, SudokuService, AimTrainerService, PairUpService, AccountScoreService, and UserService encapsulate the application's business logic and handle data operations. Repositories like ScoreRepository and UserRepository are responsible for interacting with the database.
 
@@ -237,7 +237,7 @@ TODO: Augustas
     \label{fig:united_package}
 \end{figure}
 
-This diagram provides a high-level architectural overview of the entire codebase. It cleanly divides the system into Frontend, Backend, and Shared layers. The Frontend and Backend packages are further broken down into their core areas. Importantly, the Shared package highlights the common elements like data models, interfaces, and enumerations that are utilized across both the frontend and backend, ensuring consistency and reducing redundancy. The arrows indicate dependencies between these major components, illustrating the flow of interaction and data.
+Figure~\ref{fig:united_package} provides a high-level architectural overview of the entire codebase. It cleanly divides the system into Frontend, Backend, and Shared layers. The Frontend and Backend packages are further broken down into their core areas. Importantly, the Shared package highlights the common elements like data models, interfaces, and enumerations that are utilized across both the frontend and backend, ensuring consistency and reducing redundancy. The arrows indicate dependencies between these major components, illustrating the flow of interaction and data.
 
 \begin{figure}[H]
     \centering
@@ -246,7 +246,7 @@ This diagram provides a high-level architectural overview of the entire codebase
     \label{fig:frontend_package}
 \end{figure}
 
-This diagram illustrates the modular organization of the frontend application. It clearly separates concerns into reusable Components for UI elements, higher-level UI Modules representing specific screens or functionalities, and a Services Package that handles data fetching, state management, and interaction with the backend.
+Figure~\ref{fig:frontend_package} illustrates the modular organization of the frontend application. It clearly separates concerns into reusable Components for UI elements, higher-level UI Modules representing specific screens or functionalities, and a Services Package that handles data fetching, state management, and interaction with the backend.
 
 \begin{figure}[H]
     \centering
@@ -255,11 +255,18 @@ This diagram illustrates the modular organization of the frontend application. I
     \label{fig:backend_package}
 \end{figure}
 
-This diagram delves into the internal structure of the backend system. It showcases a well-defined separation of responsibilities. Game Modules encapsulate the specific logic for each game. Repositories handle data persistence, abstracting away the underlying database interactions defined in the Database Context. The Statistics package focuses on calculating and managing game statistics. Finally, the Game Package seems to provide a more general layer for game management operations, potentially orchestrating interactions between other backend components. The dependencies clearly show how these packages interact to deliver the backend functionality.
-
+Figure~\ref{fig:backend_package} delves into the internal structure of the backend system. It showcases a well-defined separation of responsibilities. Game Modules encapsulate the specific logic for each game. Repositories handle data persistence, abstracting away the underlying database interactions defined in the Database Context. The Statistics package focuses on calculating and managing game statistics. Finally, the Game Package seems to provide a more general layer for game management operations, potentially orchestrating interactions between other backend components. The dependencies clearly show how these packages interact to deliver the backend functionality.
+\pagebreak
 \subsection{Component Diagram}
 TODO: Augustas
-...Component diagram
+\begin{figure}[H]
+    \centering
+    \textwidthdiagram{simplified_component_diagram.latex}
+    \caption{Simplified Component Diagram}
+    \label{fig:simp_component_diagram}
+\end{figure}
+
+Figure~\ref{fig:simp_component_diagram} illustrates the individual component interactions of the app. The Frontend (WebUI and Navigation) interacts with Core Services via APIs for authentication, game data, statistics, and user management. Core Services (Game Controller, Authentication, Statistics, User Management) manage game logic, security, and data, relying on the Persistence layer. The Persistence layer (DAL, Score Repository, User Repository) handles database interactions through a common interface.
 
 \section{Process View}
 
@@ -401,7 +408,6 @@ Figure~\ref{fig:use_case_settings} shows the settings available to
 authenticated players. Users can choose to make their high scores public
 or keep them private. This feature provides control over personal game
 performance visibility, enhancing user privacy options.
-
 
 
 \section{Traceability}

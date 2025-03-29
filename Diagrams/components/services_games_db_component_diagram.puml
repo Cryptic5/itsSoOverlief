@@ -1,6 +1,4 @@
-@startuml Services, Games and DB Component Diagram
-
-skinparam componentStyle rectangle
+@startuml services_games_and_db_component_diagram
 
 ' Main components
 

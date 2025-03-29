@@ -1,0 +1,119 @@
+@startuml
+hide footbox
+actor Player
+participant "Aim Trainer Page" as Page
+participant "AccountAuthStateProvider" as AccountAuthStateProvider
+participant "AimTrainerService(C)" as ClientService
+participant AimTrainerController
+participant "AimTrainerService(S)" as ServerService
+participant ScoreRepository
+
+note over ClientService, ServerService
+    These services have the same
+    name in their corresponding packages.
+    Here (C) denotes the service from the Client package
+    and (S) denotes the service from the Server package
+end note
+
+activate Player
+Player -> Page : Opens Aim Trainer
+
+activate Page
+Page -> AccountAuthStateProvider : GetUsernameAsync()
+activate AccountAuthStateProvider
+Page <-- AccountAuthStateProvider : Username
+deactivate AccountAuthStateProvider
+Player <-- Page : Initial Page View
+note over Player
+    Present the Player
+    with an initial view
+    with a loading icon
+end note
+deactivate Player
+
+opt Username not null
+    Page -> ClientService : GetUserHighscoreAsync()
+    activate ClientService
+
+    ClientService -> AimTrainerController : GetUserHighscoreAsync()
+    activate AimTrainerController
+
+    note top
+    The service makes an async
+    HTTP GET request based
+    on the username
+    end note
+
+    AimTrainerController -> ServerService : GetUserHighscoreAsync()
+    activate ServerService
+
+    ServerService -> ScoreRepository : GetHighscoreFromUserAsync()
+    activate ScoreRepository
+
+    ScoreRepository -> UserDbContext : Find User
+    activate UserDbContext
+
+    note left
+    Only return non-empty
+    list if both the user and
+    his scores were found
+    end note
+
+    alt found user
+        ScoreRepository -> UserDbContext : Find Score
+
+        alt found score
+
+        ScoreRepository <-- UserDbContext : UserScoreDto List
+
+        else score not found
+
+        ScoreRepository <-- UserDbContext : Empty List
+
+        end
+
+    else user not found
+        ScoreRepository <-- UserDbContext : Empty List
+        deactivate UserDbContext
+    end
+
+    ServerService <-- ScoreRepository : result
+    deactivate ScoreRepository
+    ServerService -> ServerService : Filter result
+    note right : This is done to get the highest score
+
+    alt score exists
+        AimTrainerController <-- ServerService : UserScoreDto
+        ClientService <-- AimTrainerController : UserScoreDto
+    else list was empty
+        AimTrainerController <-- ServerService : null
+        deactivate ServerService
+        ClientService <-- AimTrainerController : null
+        deactivate AimTrainerController
+    end
+
+    ClientService -> ClientService : parse & unwrap DTO
+
+    alt parsed successfully
+        Page <-- ClientService : Highscore
+        Page -> Page : Display Highscore
+    else parse exception
+        Page <-- ClientService : null
+        deactivate ClientService
+        Page -> Page : Display "Not Found"
+    end
+
+end
+
+note over Player
+    After an attempt to fetch
+    the Player's high score
+    present the updated view
+end note
+
+Player <- Page : Updated Page View
+deactivate Page
+activate Player
+deactivate Player
+@enduml
+

@@ -23,6 +23,7 @@
 
 \usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
 
+\usepackage[export]{adjustbox}
 \usepackage{plantuml}
 \usepackage{float}
 \usepackage{indentfirst}
@@ -103,11 +104,12 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
 
 \begin{figure}[H]
     \centering
-    \textwidthdiagram{class_diagram.latex}
+    \begin{adjustbox}{width=0.98\paperwidth,center}
+        \inputdiagram{class_diagram.latex}
+    \end{adjustbox}
     \caption{Class Diagram}
     \label{fig:class_diagram}
 \end{figure}
-
 
 Figure~\ref{fig:class_diagram} depicts all frontend pages (AccountPage, StatisticsPage, SettingsPage, MathGamePage, SudokuGamePage, PairMatchingGamePage, AimTrainerPage) that inherit from BlazerComponentBase. AccountPage and StatisticsPage provide interfaces for tracking cognitive progress. SettingsPage allows users to modify their privacy settings. The game-specific pages (MathGamePage, SudokuGamePage, PairMatchingGamePage, AimTrainerPage) are each designed for a unique game experience, and every gaming page utilizes a TimerService to consistently manage countdowns.
 

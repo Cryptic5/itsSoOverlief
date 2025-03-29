@@ -95,8 +95,32 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
 \tableofcontents
 
 \section{Context}
- Very EPIC text and ideas...
- ??????
+Our web-based platform offers a number of cognitive games that are designed to test and enhance skills such as memory, attention, reaction time, and problem-solving. Users can access the system directly through a browser without needing to install any software or mobile apps. The platform provides customizable game difficulties and tracks user performance over time. While engaging, the platform prioritizes measurable cognitive improvement over entertainment.
+
+\subsection{Technology Stack}
+\begin{itemize}
+    \item \textbf{Frontend:} Built with Blazor for interactive C\#-based UI.
+    \item \textbf{Backend:} .NET (C\#) for business logic, user authentication, and statistics tracking.
+    \item \textbf{Database:} SQLite for lightweight storage of user data and game progress.
+    \item \textbf{Security:} Implements password-protected authentication.
+\end{itemize}
+
+\subsection{Content \& Accessibility Boundaries}
+\begin{itemize}
+    \item Games focus on cognitive improvement, not entertainment or storytelling.
+    \item No complex mechanics (e.g., multiplayer or 3D).
+    \item Web-based only—no mobile apps, downloads, or third-party integrations.
+\end{itemize}
+
+\subsection{Functionality \& Monetization}
+\begin{itemize}
+    \item Single-player only; no social features.
+    \item No in-game purchases or microtransactions.
+\end{itemize}
+
+
+
+
 
 \section{Logical View}
 
@@ -104,7 +128,7 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
 
 \begin{figure}[H]
     \centering
-    \begin{adjustbox}{width=0.98\paperwidth,center}
+    \begin{adjustbox}{width=0.95\paperwidth,center}
         \inputdiagram{class_diagram.tex}
     \end{adjustbox}
     \caption{Class Diagram}

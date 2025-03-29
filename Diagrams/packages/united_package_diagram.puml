@@ -1,41 +1,54 @@
 @startuml United Package Diagram
-!pragma layout smetana
+'!pragma layout smetana
 
-package "Codebase" {
-    
-    package "Frontend" {
+    package "Client" {
         package "Components" {}
-        package "UI Modules" {}
+        package "Pages" {}
         package "Services" {}
 
         
     }
 
-    package "Backend" {
-        package "Game Modules" {}
+    package "Server" {
+        package "Controllers" {}
+        package "Services" {}
+        package "Enums" {}
         package "Repositories" {}
-        package "Database Context" {}
-        package "Statistics" {}
-        package "Games" {}
+        package "Database" {}
     }
+
+
 
     package "Shared" {
         package "Enums" {}
-        package "Interfaces" {}
         package "Models" {}
     }
 
-    "Game Modules" --> "Interfaces"
-    "Repositories" --> "Models"
-    "Games" --> "Statistics"
-    "Games" --> "Game Modules"
-    "Games" --> "Repositories" 
-    "Services" -->  "Interfaces"
-    "Repositories" --> "Database Context"
-    "Games" --> "Enums" 
-    "Components" --> "UI Modules" 
-    "Statistics" --> "Repositories" 
-}
+    'lient.Pages -- Server.Controllers
+
+
+    Client.Pages "<<Import>>"..> Client.Components
+    Client.Pages "<<Import>>"..> Client.Services
+
+
+
+    Server.Controllers "<<Import>>"..> Server.Services
+  
+
+    Server.Services "<<Import>>"..> Server.Repositories
+    Server.Services "<<Import>>"..> Server.Enums
+
+    Server.Repositories "<<Import>>"..> Server.Database
+
+    Shared.Models <.."<<Import>>" Client.Pages
+    Shared.Models <.."<<Import>>" Server.Controllers
+
+    Shared.Enums <.."<<Import>>" Client.Pages
+    Shared.Enums <.."<<Import>>" Client.Services
+
+    Shared.Enums <.."<<Import>>" Server.Controllers
+    Shared.Enums <.."<<Import>>" Server.Services
+
 
 
 @enduml

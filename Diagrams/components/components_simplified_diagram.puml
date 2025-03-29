@@ -1,6 +1,6 @@
 @startuml Component simplified Diagram
 top to bottom direction
-skinparam componentStyle rectangle
+
 
 ' Main components
 package "Frontend" {

@@ -297,6 +297,13 @@ The diagram is divided into Client, Server, and Shared folders. The Shared packa
 
 Figure~\ref{fig:simp_component_diagram} illustrates the individual component interactions of the app. The Frontend (WebUI and Navigation) interacts with Core Services via APIs for authentication, game data, statistics, and user management. Core Services (Game Controller, Authentication, Statistics, User Management) manage game logic, security, and data, relying on the Persistence layer. The Persistence layer (DAL, Score Repository, User Repository) handles database interactions through a common interface.
 
+\begin{figure}[H]
+    \centering
+    \textwidthdiagram{client_components.tex}
+    \caption{Client Package Component Diagram}
+    \label{fig:client_components}
+\end{figure}
+
 \section{Process View}
 
 \begin{figure}[H]

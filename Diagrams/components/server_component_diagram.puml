@@ -1,4 +1,4 @@
-@startuml components_simplified_diagram
+@startuml server_component_diagram
 left to right direction
 
 package "Database" {

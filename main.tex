@@ -7,7 +7,7 @@
 %\usepackage{gentium}
 \usepackage{mathptmx} % Use Times Font
 
-
+\usepackage{comment}
 \usepackage[pdftex]{graphicx} % Required for including pictures
 \usepackage[pdftex,linkcolor=black,pdfborder={0 0 0}]{hyperref} % Format links for pdf
 \usepackage{calc} % To reset the counter in the document after title page
@@ -260,15 +260,19 @@ game while clearly defining the conditions for continuation and termination.
 \section{Development View}
 
 \subsection{Package Diagram}
-TODO: Augustas
+
 \begin{figure}[H]
     \centering
-    \textwidthdiagram{united_package_diagram.tex}
-    \caption{United Package Diagram}
+    \textwidthdiagram{Package_Diagram.latex}
+    \caption{Package Diagram} 
     \label{fig:united_package}
 \end{figure}
 
-Figure~\ref{fig:united_package} provides a high-level architectural overview of the entire codebase. It cleanly divides the system into Frontend, Backend, and Shared layers. The Frontend and Backend packages are further broken down into their core areas. Importantly, the Shared package highlights the common elements like data models, interfaces, and enumerations that are utilized across both the frontend and backend, ensuring consistency and reducing redundancy. The arrows indicate dependencies between these major components, illustrating the flow of interaction and data.
+Figure~\ref{fig:united_package} provides an overview of the most significant parts of the codebase. This diagram includes some parts of the system that were not mentioned in the class diagram, such as Shared/Enums, Client/Components, and Server/Database. This addition provides a more detailed view of the system.
+
+The diagram is divided into Client, Server, and Shared folders. The Shared package highlights common elements like data models and enumerations that are used across both the frontend and backend, ensuring consistency and reducing redundancy. The arrows indicate dependencies, illustrating how functionality is physically imported from one package to another
+
+\begin{comment}
 
 \begin{figure}[H]
     \centering
@@ -279,6 +283,7 @@ Figure~\ref{fig:united_package} provides a high-level architectural overview of 
 
 Figure~\ref{fig:frontend_package} illustrates the modular organization of the frontend application. It clearly separates concerns into reusable Components for UI elements, higher-level UI Modules representing specific screens or functionalities, and a Services Package that handles data fetching, state management, and interaction with the backend.
 
+
 \begin{figure}[H]
     \centering
     \textwidthdiagram{backend_package.latex}
@@ -287,6 +292,7 @@ Figure~\ref{fig:frontend_package} illustrates the modular organization of the fr
 \end{figure}
 
 Figure~\ref{fig:backend_package} delves into the internal structure of the backend system. It showcases a well-defined separation of responsibilities. Game Modules encapsulate the specific logic for each game. Repositories handle data persistence, abstracting away the underlying database interactions defined in the Database Context. The Statistics package focuses on calculating and managing game statistics. Finally, the Game Package seems to provide a more general layer for game management operations, potentially orchestrating interactions between other backend components. The dependencies clearly show how these packages interact to deliver the backend functionality.
+\end{comment}
 
 
 \subsection{Component Diagram}

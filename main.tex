@@ -305,8 +305,6 @@ The diagram is divided into Client, Server, and Shared folders. The Shared packa
 Figure~\ref{fig:server_component_diagram} illustrates the architecture of components from the Server package. Controllers provide API endpoints for frontend services, with each controller communicating with its corresponding service layer through well-defined interfaces. Services encapsulate the core business logic including game mechanics, user tracking, and account management. These services interact with other necessary services or repositories as needed. Data access is handled through repositories that abstract database operations.
 
 
-\textbf{Server Component Diagram to Class Diagram Mapping}
-
 The following outlines the mapping between components from a server component diagram and corresponding classes in a class diagram, organized by their respective subsystems or folders:
 \begin{enumerate}[label=\textbf{\arabic*.}, ref=\arabic*]
     \item \textbf{Services}
@@ -423,14 +421,99 @@ The following outlines the mapping between components from a server component di
     \label{fig:client_components}
 \end{figure}
 
-Figure~\ref{fig:client_components} visualizes the Client package.  The pages
+Figure~\ref{fig:client_components} visualizes the components inside the Client package.  The pages
 are divided into two subsytems: User Pages - for handling client-side
 authentication and account managment related views, Game Pages - for pages
-containing game implementations. The PageComponents interface with components
+containing game implementations. The Page components interface with components
 from both the Account Services and Game Services subsystems.  The service
 components are responsible for storing game or account related data locally,
 substituting parts of game logic implementation or making HTTP requests to
 the Web API. Hence they require HTTP API Endpoints for their functionality.
+
+The following outlines the mapping between components from a client component diagram and corresponding classes in a class diagram:
+\begin{enumerate}[label=\textbf{\arabic*.}, ref=\arabic*]
+    \item \textbf{Services}
+        \begin{enumerate}[label=\textbf{\alph*.}, ref=\theenumi.\alph*]
+            \item \textbf{Timer Service}
+                \begin{itemize}
+                    \item \textbf{Component:} \texttt{TimerService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{TimerService}
+                        \end{itemize}
+                \end{itemize}
+            \item \textbf{Account Services Subsystem}
+                \begin{itemize}
+                    \item \textbf{Component:} \texttt{AccountScoreService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{AccountScoreService}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{AccountService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} (Not in Class Diagram)
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{AccountAuthStateProvider}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} (Not in Class Diagram)
+                        \end{itemize}
+                \end{itemize}
+            \item \textbf{Game Services Subsystem}
+                \begin{itemize}
+                    \item \textbf{Component:} \texttt{SudokuService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{SudokuService}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{MathGameService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{MathGameService}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{PairUpService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{PairUpService}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{AimTrainerService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{AimTrainerService}
+                        \end{itemize}
+                \end{itemize}
+        \end{enumerate}
+    \item \textbf{Pages}
+        \begin{enumerate}[label=\textbf{\alph*.}, ref=\theenumi.\alph*]
+            \item \textbf{User Pages Subsystem}
+                \begin{itemize}
+                    \item \textbf{Component:} \texttt{ScorePage}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{StatisticsPage}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{AccountPage}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{AccountPage}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{SettingsPage}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{SettingsPage}
+                        \end{itemize}
+                \end{itemize}
+            \item \textbf{Game Pages Subsystem}
+                \begin{itemize}
+                    \item \textbf{Component:} \texttt{AimTrainerPage}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{AimTrainerPage}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{SudokuPage}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{SudokuPage}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{MathGamePage}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{MathGamePage}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{PairUpPage}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{PairMatchingGamePage}
+                        \end{itemize}
+                \end{itemize}
+        \end{enumerate}
+\end{enumerate}
 
 \section{Process View}
 
@@ -733,10 +816,6 @@ Privatize High Score& \textit{Not explicitly covered in the diagrams}\\
 Make High Score Public& \textit{Not explicitly covered in the diagrams}\\
 \hline
 \end{tabular}
-
-\vspace{8pt} % value to increase the gap
-
-\textbf{F (Functional Requirements), NF (Non-Functional Requirements)}
 
 \vspace{8pt} % value to increase the gap
 

@@ -1,0 +1,89 @@
+@startuml
+left to right direction
+package "Pages" {
+    component "Game Pages" <<subsystem>> as GPages {
+            [AimTrainerPage] <<component>>
+            [MathGamePage] <<component>>
+            [SudokuPage] <<component>>
+            [PairUpPage] <<component>>
+    }
+
+    component "User Pages" <<subsystem>> as UPages {
+            [SettingsPage] <<component>>
+            [AccountPage] <<component>>
+            [ScorePage] <<component>>
+    }
+}
+
+package "Services" {
+    component "Account Services" <<subsystem>> as AService {
+            [AccountAuthStateProvider] <<component>>
+            [AccountService] <<component>>
+            [AccountScoreService] <<component>>
+    }
+
+    component "Game Services" <<subsystem>> as GServices {
+            [AimTrainerService] <<component>>
+            [MathGameService] <<component>>
+            [SudokuService] <<component>>
+            [PairUpService] <<component>>
+    }
+
+    [TimerService] <<component>>
+}
+
+interface "Username Provider" as UProvider
+interface "Score Managment" as SManagement
+note bottom of SManagement
+    This is an abstraction for diagram clarity,
+    each game page uses the corresponding
+    service for it's score managment
+end note
+interface "Account Management" as AManagment
+interface "Statistics" as Statistics
+interface "Timing Provider" as TProv
+interface "Sudoku Logic" as SudokuLogic
+interface "Math Game Logic" as MathGameLogic
+
+label "Scores API" as ScoresAPI
+label "Auth API" as AuthAPI
+label "Sudoku Game API" as SudokuAPI
+label "Math Game API" as MathAPI
+label "Pair Up API" as PairUpAPI
+label "Aim Trainer API" as AimTrainerAPI
+AccountAuthStateProvider -- UProvider
+
+AccountAuthStateProvider -l- AccountService
+note right on link
+    These components use local
+    browser storage to get/set
+    authentication data
+end note
+
+AccountService -- AManagment
+AccountScoreService -- Statistics
+
+MathGameService -- MathGameLogic
+SudokuService -- SudokuLogic
+
+GServices -- SManagement
+TimerService -d- TProv
+TProv )-r- GPages
+
+ScoresAPI )-- AccountScoreService
+AuthAPI )-- AccountService
+SudokuAPI )-- SudokuService
+MathAPI )-- MathGameService
+PairUpAPI )-- PairUpService
+AimTrainerAPI )-- AimTrainerService
+
+Statistics )-- ScorePage
+AManagment )-- SettingsPage
+AManagment )-- AccountPage
+UProvider )-- GPages
+UProvider )-- UPages
+SManagement )-- GPages
+
+SudokuLogic )-- SudokuPage
+MathGameLogic )-- MathGamePage
+@enduml

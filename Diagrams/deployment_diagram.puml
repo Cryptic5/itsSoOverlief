@@ -1,19 +1,55 @@
 @startuml
-node "Client Browser" as Client <<device>> {
-  node "WASM Dotnet runtime" as ClientRuntime <<execution environment>> {
-        artifact "Client.dll" <<executable>>
+left to right direction
+node "Client Device\n{CPU=2 cores}\n{RAM=4GB}\n{Storage=2GB}" as ClientDevice <<device>> {
+    node "Internet Browser\n{Chrome version 134 and above}\n{Firefox version 136 and above}" as Client <<execution environment>> {
+        node "WASM Dotnet Runtime\n{.NET version=8.0}" as ClientRuntime <<execution environment>> {
+            component "Account Services" <<subsystem>> as AServices
+            component "Game Services" <<subsystem>> as GServices
+            artifact "Client.dll" <<executable>> as ClientExe
+            note bottom of ClientExe
+                This dll contains the
+                compiled BlazorWASM App
+                using the <i>Client</i> package
+            end note
+        }
     }
 }
 
-node "Azure Server" as Server <<device>> { 
-    node "Linux" as Linux <<execution environment>> {
-        node "Dotnet Runtime" as Dotnet <<execution environment>> {
-            artifact "Server.dll" as ServerArtifact <<executable>>
+node "Azure Server\n{CPU=8 cores}\n{RAM=16GB}\n{Storage=200GB}"  as Server <<device>> { 
+    node "Linux\n{OS=Ubuntu 24.04.2 LTS}" as Linux <<execution environment>> {
+        node "Dotnet Runtime\n{.NET version=8.0}" as Dotnet <<execution environment>> {
+            component "Game Controllers" <<subsystem>> as GControllers
+            component "User Controllers" <<subsystem>> as UControllers
+            artifact "Server.dll" <<executable>> as ServerExe
+            note bottom of ServerExe
+                This dll contains the compiled .NET Web API
+                using the <i>Server</i> package
+            end note
         }
-        artifact "SQLiteDB" as SQLiteDB <<file>>
+        artifact "SQLiteDB.db" as SQLiteDB <<file>>
     }
-}
+} 
+
+interface "Account API" as AAPI
+interface "Game API" as GAPI
+
+GControllers -- GAPI
+UControllers -- AAPI
+GAPI )-- GServices
+AAPI )-- AServices
+
+ServerExe -- GControllers
+ServerExe -- UControllers
+ServerExe -l- SQLiteDB
+note left on link
+    SQLite uses the file <i>SQLiteDB.db</i>
+    as the data source.
+end note
+
+AServices -- ClientExe
+GServices -- ClientExe
 
 ' Communication between nodes
 Client --> Server : HTTPS
+
 @enduml

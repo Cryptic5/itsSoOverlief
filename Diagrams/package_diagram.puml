@@ -1,4 +1,4 @@
-@startuml United Package Diagram
+@startuml united_package_diagram
 '!pragma layout smetana
 
     package "Client" {

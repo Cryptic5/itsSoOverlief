@@ -126,13 +126,15 @@ Our web-based platform offers a number of cognitive games that are designed to t
 \subsection{Class Diagram}
 
 \begin{figure}[H]
-    \centering
-    \textwidthdiagram{class_diagram.latex}
-    \caption{Class Diagram}
-    \label{fig:Class Diagram}
+     \centering
+     \begin{adjustbox}{width=0.92\paperwidth,center}
++        \inputdiagram{class_diagram.tex}
+     \end{adjustbox}
+     \caption{Class Diagram}
+     \label{fig:class_diagram}
 \end{figure}
 
-Figure~\ref{fig:Class Diagram} illustrates the structure of the application, dividing it into client-side and server-side components. On the client side, frontend pages inherit from BlazerComponentBase, including AccountPage and StatisticsPage for tracking cognitive progress, SettingsPage for managing privacy settings, and game-specific pages like MathGamePage, SudokuGamePage, PairMatchingGamePage, and AimTrainerPage, all of which utilize TimerService for countdowns. Most .cs files related to these pages are located in the Client/Pages folder, TimerService is located in Client/Services.
+Figure~\ref{fig:class_diagram} illustrates the structure of the application, dividing it into client-side and server-side components. On the client side, frontend pages inherit from BlazerComponentBase, including AccountPage and StatisticsPage for tracking cognitive progress, SettingsPage for managing privacy settings, and game-specific pages like MathGamePage, SudokuGamePage, PairMatchingGamePage, and AimTrainerPage, all of which utilize TimerService for countdowns. Most .cs files related to these pages are located in the Client/Pages folder, TimerService is located in Client/Services.
 
 On the server side, controllers in the 'Server/Controllers' folder, including AccountScoreController, MathGameController, and others, expose API endpoints. Business logic is handled by services such as MathGameService, SudokuService, AimTrainerService, PairUpService, AccountScoreService, and UserService, all located in the 'Server/Services folder'. Repositories like ScoreRepository and UserRepository in the 'Server/Repositories' folder manage database interactions.
 
@@ -255,14 +257,13 @@ game while clearly defining the conditions for continuation and termination.
 
 
 
-
 \section{Development View}
 
 \subsection{Package Diagram}
 TODO: Augustas
 \begin{figure}[H]
     \centering
-    \textwidthdiagram{united_package.latex}
+    \textwidthdiagram{united_package_diagram.tex}
     \caption{United Package Diagram}
     \label{fig:united_package}
 \end{figure}
@@ -301,20 +302,65 @@ Figure~\ref{fig:simp_component_diagram} illustrates the individual component int
 
 \section{Process View}
 
-\subsection{Sequence Diagram}
 \begin{figure}[H]
     \centering
-    \textwidthdiagram{aim_trainer_page_sequence.tex}
-    \caption{Aim Trainer Page Loading Sequence}
+     \begin{adjustbox}{width=0.92\paperwidth,center}
++        \inputdiagram{aim_trainer_page_sequence.tex}
+     \end{adjustbox}
+     \caption{\textit{Aim Trainer} Page Loading Sequence}
     \label{fig:aim_trainer_page_sequence}
 \end{figure}
+In order to visualize the way in which score fetching works for all of
+our games we will do a case analysis on the \textit{Aim Trainer} page.
+Figure~\ref{fig:aim_trainer_page_sequence} illustrates the process flow
+when a player opens the Aim Trainer page. Initially, the page immediately
+requests the username from the authentication provider component. After
+this, an initial page is shown to the user with an icon to indicate the fact
+that scores are being loaded. Once the username is retrieved and confirmed
+not to be null, the page initiates an asynchronous call to the client-side
+service to fetch the player's high score. The client service makes an HTTP GET
+request to an endpoint provided by the Aim Trainer controller, which, in turn,
+invokes the server-side service. The server service interacts with the Score
+Repository and User Database Context to locate the corresponding user and
+their scores. Depending on whether the user and score exist, the repository
+returns either a list of scores or an empty list. The server service then
+filters the result to extract the highest score, and this filtered result
+is passed back up the chain and sent back as JSON (if a score was found)
+and an empty response otherwise. After parsing and unwrapping the data on
+the client side, the Aim Trainer page updates its display, showing either the
+retrieved high score or a "Not Found" message if no score was found. Finally,
+the updated view is presented to the player. This is the way all of our
+games implement the score fetching functionality.
+
+TODO: specifying koki objecta grazina?
 
 \begin{figure}[H]
     \centering
-    \textwidthdiagram{aim_trainer_set_score_sequence.tex}
+     \begin{adjustbox}{width=0.92\paperwidth,center}
++        \inputdiagram{aim_trainer_set_score_sequence.tex}
+     \end{adjustbox}
     \caption{Aim Trainer Score Setting Sequence}
     \label{fig:aim_trainer_set_score_sequence}
 \end{figure}
+
+This sequence diagram (Figure~\ref{fig:aim_trainer_set_score_sequence}) is an
+example of the process initiated by finishing a play session in one our games
+\textbf{WHILE AUTHENTICATED} (otherwise no such process occurs on the client
+side). Once the game ends, the page calls the client-side service to save the
+player's score asynchronously. The client service wraps the score within a
+DTO and forwards it via an HTTP POST request to an API endpoint provided by
+the Aim Trainer controller. The controller then uses the server-side service
+component to process the request. The server-side service unwraps the DTO
+and uses an interface provided by the Score Repository, which attempts
+to find the corresponding user within the given database context.  If the
+user is found, the repository attempts to add the score to the database;
+if an exception occurs during this process it is caught by the controller
+and the controller decides the appropriate HTTP error code to return (HTTP
+500 for DB exceptions, or HTTP 400 when a user is not found, indicating
+that a deceptive request might have been sent). If the user is found, and
+the insertion process is successful the controller returns a HTTP 200 OK
+code. Finally, the result is propagated back through the client service to
+the Aim Trainer page, updating the UI accordingly.
 
 \subsection{Activity Diagram}
 TODO: Mykolas
@@ -327,6 +373,8 @@ TODO: Mykolas
     \caption{Deployment Diagram}
     \label{fig:deployment_diagram}
 \end{figure}
+
+TODO: include components
 
 Figure~\ref{fig:deployment_diagram} illustrates the architecture of the web application,
 which consists of a client-side Blazor WebAssembly (WASM) front-end and a back-end hosted on an Azure server. The client browser executes the .NET WASM

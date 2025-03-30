@@ -17,7 +17,7 @@ package "Services" {
     [UserTrackingService] <<component>> as UserTrackingSvc
     [AccountScoreService] <<component>> as AccountScoreSvc
 
-    interface "User Tracking" <<interface>> as UserTracking
+    interface "User Tracking"  as UserTracking
     UserTrackingSvc -l-  UserTracking
     UserSvc -r-( UserTracking
     }
@@ -32,8 +32,8 @@ package "Services" {
         [MathGameScoreboardService] <<component>> as MathGameScoreboardSvc
         [MathGenerationService] <<component>> as MathGenSvc
 
-        interface "Math Game Calculation" <<interface>> as MathGameCalc
-        interface "Math Game Generation" <<interface>> as MathGameGen
+        interface "Math Game Calculation"  as MathGameCalc
+        interface "Math Game Generation"  as MathGameGen
 
         MathGenSvc -l-  MathGameGen
         MathGameSvc -r-(  MathGameGen
@@ -61,9 +61,9 @@ package "Controllers"  {
     }
 }
 
-interface "Math Game Logic" <<interface>> as MathGameLogic
+interface "Math Game Logic"  as MathGameLogic
 
-interface "Math Game Statistics" <<interface>> as MathGameScore
+interface "Math Game Statistics"  as MathGameScore
 
 MathGameSvc -- MathGameLogic
 MathGameScoreboardSvc -- MathGameScore
@@ -73,45 +73,45 @@ MathGameLogic )--  MathGameCtrl
 MathGameScore )--  MathGameCtrl
 
 
-interface "Pair Up Logic" <<interface>> as PairUpLogic
+interface "Pair Up Logic"  as PairUpLogic
 
 PairUpSvc -- PairUpLogic
 PairUpLogic )-- PairUpCtrl
 
-interface "Aim Trainer Logic" <<interface>> as AimTrainerLogic
+interface "Aim Trainer Logic"  as AimTrainerLogic
 
 AimTrainerSvc -- AimTrainerLogic
 AimTrainerLogic )-- AimTrainerCtrl
 
-interface "Sudoku Logic" <<interface>> as SudokuLogic
+interface "Sudoku Logic"  as SudokuLogic
 
 SudokuSvc -- SudokuLogic
 SudokuLogic )-- SudokuGameCtrl
 
-interface "Account Statistics" <<interface>> as AccountStats
+interface "Account Statistics"  as AccountStats
 
 AccountScoreSvc -d- AccountStats
 AccountStats )-- AccountScoreCtrl
 
-interface "Account Management" <<interface>> as AccountManagement
+interface "Account Management"  as AccountManagement
 UserSvc --  AccountManagement
 AccountManagement )--  UserCtrl
 
-interface "Math Game Statistics Storage" <<interface>> as MathGameScoreboardStorage
+interface "Math Game Statistics Storage"  as MathGameScoreboardStorage
 
 MathGameScoreboardStorage )--  MathGameScoreboardSvc
 ScoreRepo --  MathGameScoreboardStorage
 
 
-interface "User Information" <<interface>> as UserInfo
+interface "User Information"  as UserInfo
 UserRepo -u-   UserInfo
 UserSvc -r-(  UserInfo
 
-interface "Score Information" <<interface>> as ScoreInfo
+interface "Score Information"  as ScoreInfo
 UserDb -d- ScoreInfo
 ScoreRepo -l-(  ScoreInfo
 
-interface "User in Database Information" <<interface>> as UserInfoDb
+interface "User in Database Information"  as UserInfoDb
 UserDb -- UserInfoDb
 UserInfoDb )-- UserRepo
 

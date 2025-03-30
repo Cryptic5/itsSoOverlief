@@ -255,7 +255,7 @@ the game ends. This design effectively captures the iterative nature of this
 game while clearly defining the conditions for continuation and termination.
 
 
-\subsection{ER Diagram}
+\subsection{Information Model}
 
 \begin{figure}[H]
     \centering
@@ -284,7 +284,7 @@ The diagram is divided into Client, Server, and Shared folders. The Shared packa
 
 
 
-\subsection{Component Diagram}
+\subsection{Component Diagrams}
 
 \begin{figure}[H]
     \centering
@@ -293,7 +293,119 @@ The diagram is divided into Client, Server, and Shared folders. The Shared packa
     \label{fig:server_component_diagram}
 \end{figure}
 
-Figure~\ref{fig:server_component_diagram} illustrates the individual component interactions of the app. The Frontend (WebUI and Navigation) interacts with Core Services via APIs for authentication, game data, statistics, and user management. Core Services (Game Controller, Authentication, Statistics, User Management) manage game logic, security, and data, relying on the Persistence layer. The Persistence layer (DAL, Score Repository, User Repository) handles database interactions through a common interface.
+Figure~\ref{fig:server_component_diagram} illustrates the server-side component architecture. Controllers provide API endpoints for frontend services, with each controller communicating with its corresponding service layer through well-defined interfaces. Services encapsulate the core business logic including game mechanics, user tracking, and account management. These services interact with other necessary services or repositories as needed. Data access is handled through repositories that abstract database operations.
+
+
+\textbf{Component Diagram to Class Diagram Mapping}
+
+The following outlines the mapping between components from a component diagram and corresponding classes in a class diagram, organized by their respective subsystems or folders:
+\begin{enumerate}[label=\textbf{\arabic*.}, ref=\arabic*]
+    \item \textbf{Services}
+        \begin{enumerate}[label=\textbf{\alph*.}, ref=\theenumi.\alph*]
+            \item \textbf{User Services Subsystem}
+                \begin{itemize}
+                    \item \textbf{Component:} \texttt{UserTrackingService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{UserTrackingService}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{UserService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{UserServices}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{AccountScoreService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{accountScoreService}
+                        \end{itemize}
+                \end{itemize}
+            \item \textbf{Game Services Subsystem}
+                \begin{itemize}
+                    \item \textbf{Component:} \texttt{AimTrainerService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{AimTrainerService}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{SudokuService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{SudokuService}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{PairUpService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{PairUpService}
+                        \end{itemize}
+                \end{itemize}
+            \item \textbf{Math Game Services Subsystem}
+                \begin{itemize}
+                    \item \textbf{Component:} \texttt{MathGameServices}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{MathGameService}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{MathGenerationService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} (Not in Class Diagram)
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{MathCalculationService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} (Not in Class Diagram)
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{MathGameScoreboardService}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} (Not in Class Diagram)
+                        \end{itemize}
+                \end{itemize}
+        \end{enumerate}
+    \item \textbf{Controllers}
+        \begin{enumerate}[label=\textbf{\alph*.}, ref=\theenumi.\alph*]
+            \item \textbf{User Controllers Subsystem}
+                \begin{itemize}
+                    \item \textbf{Component:} \texttt{UserController}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{UserController}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{AccountScoreController}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{AccountScoreController}
+                        \end{itemize}
+                \end{itemize}
+            \item \textbf{Game Controllers Subsystem}
+                \begin{itemize}
+                    \item \textbf{Component:} \texttt{AimTrainerController}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{AimTrainerController}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{SudokuController}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{SudokuController}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{PairUpController}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{PairUpController}
+                        \end{itemize}
+                    \item \textbf{Component:} \texttt{MathGameController}
+                        \begin{itemize}
+                            \item \textbf{Equivalent Class:} \texttt{MathGameController}
+                        \end{itemize}
+                \end{itemize}
+        \end{enumerate}
+    \item \textbf{Repositories Folder}
+        \begin{itemize}
+            \item \textbf{Component:} \texttt{User Repository}
+                \begin{itemize}
+                    \item \textbf{Equivalent Class:} \texttt{UserRepository}
+                \end{itemize}
+            \item \textbf{Component:} \texttt{Score Repository}
+                \begin{itemize}
+                    \item \textbf{Equivalent Class:} \texttt{ScoreRepository}
+                \end{itemize}
+        \end{itemize}
+    \item \textbf{Database Folder}
+        \begin{itemize}
+            \item \textbf{Component:} \texttt{UserDbContext}
+                \begin{itemize}
+                    \item \textbf{Equivalent Class:} (Not in Class Diagram)
+                \end{itemize}
+        \end{itemize}
+\end{enumerate}
+
+
 
 \begin{figure}[H]
     \centering
@@ -304,10 +416,11 @@ Figure~\ref{fig:server_component_diagram} illustrates the individual component i
 
 \section{Process View}
 
+\subsection{Sequence Diagrams}
+
 \begin{figure}[H]
     \centering
-     \begin{adjustbox}{width=0.92\paperwidth,center}
-+        \inputdiagram{aim_trainer_page_sequence.tex}
+     \begin{adjustbox}{width=0.92\paperwidth,center}       \inputdiagram{aim_trainer_page_sequence.tex}
      \end{adjustbox}
      \caption{\textit{Aim Trainer} Page Loading Sequence}
     \label{fig:aim_trainer_page_sequence}
@@ -339,7 +452,7 @@ TODO: specifying koki objecta grazina?
 \begin{figure}[H]
     \centering
      \begin{adjustbox}{width=0.92\paperwidth,center}
-+        \inputdiagram{aim_trainer_set_score_sequence.tex}
+        \inputdiagram{aim_trainer_set_score_sequence.tex}
      \end{adjustbox}
     \caption{Aim Trainer Score Setting Sequence}
     \label{fig:aim_trainer_set_score_sequence}
@@ -371,12 +484,12 @@ TODO: Mykolas
 \subsection{Deployment}
 \begin{figure}[H]
     \centering
-    \textwidthdiagram[0.8]{deployment_diagram.tex}
+    \begin{adjustbox}{width=0.92\paperwidth,center}
+        \inputdiagram{deployment_diagram.tex}
+     \end{adjustbox}
     \caption{Deployment Diagram}
     \label{fig:deployment_diagram}
 \end{figure}
-
-TODO: include components
 
 Figure~\ref{fig:deployment_diagram} illustrates the architecture of the web application,
 which consists of a client-side Blazor WebAssembly (WASM) front-end and a back-end hosted on an Azure server. The client browser executes the .NET WASM
@@ -503,52 +616,48 @@ authenticated players. Users can choose to make their high scores public
 or keep them private. This feature provides control over personal game
 performance visibility, enhancing user privacy options.
 
-\newpage
+
 \section{Traceability}
 
-\begin{table}[]
+\begin{table}
 \begin{tabular}{|l|l|}
 \hline
-\multicolumn{1}{|c|}{\textbf{Use Cases}}    & \multicolumn{1}{|c|}{\textbf{ System components}}                   \\ \hline
+\multicolumn{1}{|c|}{\textbf{Use Cases}}    & \multicolumn{1}{|c|}{\textbf{Coverage}}                   \\ \hline
 \multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_account} Account Use Case} }                                          \\ \hline
-& \\
-& \\
-& \\
+Log in& Figure~\ref{fig:user_authentication_state}\\
+Sign up& \\
+Log out& Figure~\ref{fig:user_authentication_state}\\
 \hline
-\multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_account} Account Use Case} }                                      \\
+\multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_game_page} Game Page Use Case} }                                      \\
 \hline
-& \\
-& \\
-& 
-\\
+Start game& \\
+Change Difficulty& \\
 \hline
-\multicolumn{2}{|c|}{\textbf{Administrators (Primary Stakeholders)}}                                   \\
+\multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_high_score} High Score Module Use Case} }                                         \\
 \hline
-&  \\
-& \\
-& \\
+View shortened game statistics& Figure~\ref{fig:score_fetching_state} Figure~\ref{fig:united_package} Figure~\ref{fig:client_components} \\
+View graph of game statistics& Figure~\ref{fig:score_fetching_state} Figure~\ref{fig:united_package} Figure~\ref{fig:client_components} \\
+View timeline of played games& Figure~\ref{fig:score_fetching_state} Figure~\ref{fig:united_package} Figure~\ref{fig:client_components} \\
+View game statistics by difficulty& Figure~\ref{fig:score_fetching_state} Figure~\ref{fig:united_package} Figure~\ref{fig:client_components} \\
 \hline
-\multicolumn{2}{|c|}{\textbf{Shareholders / Investors (Primary Stakeholders)}}                         \\
+\multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_navigation} Page Navigation Use Case} }                          \\
 \hline
-& \\
-& \\
-& \\
+Go to home page (game selection)& Figure~\ref{fig:class_diagram}Figure~\ref{fig:united_package} Figure~\ref{fig:client_components}\\
+Go to account page& Figure~\ref{fig:class_diagram}Figure~\ref{fig:united_package} Figure~\ref{fig:client_components}\\
+Go to statistics page& Figure~\ref{fig:class_diagram}Figure~\ref{fig:united_package} Figure~\ref{fig:client_components}\\
+Go to settings page& Figure~\ref{fig:class_diagram}Figure~\ref{fig:united_package} Figure~\ref{fig:client_components}\\
 \hline
-\multicolumn{2}{|c|}{\textbf{Partners - Educational Institutions (Secondary Stakeholders)}}            \\
+\multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_game_selection} Game Selection Use Case} }           \\
 \hline
-& \\
-& \\
-& \\
+Play "Aim Trainer"& Figure~\ref{fig:aim_trainer_state}\\
+Play "Math Game"& Figure~\ref{fig:math_state}\\
+Play "Pair Up"& Figure~\ref{fig:pair_up_state}\\
+Play "Sudoku"& Figure~\ref{fig:sudoku_state}\\
 \hline
-\multicolumn{2}{|c|}{\textbf{National Institute of Standards and Technology (Secondary Stakeholders)}} \\
+\multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_account} Account Settings Use Case} }   \\
 \hline
-& \\
-\hline
-\multicolumn{2}{|c|}{\textbf{Compliance with local laws - GDPR (Secondary Stakeholders)}}              \\
-\hline
-&\\
-& \\
-& \\
+Privatize High Score& \\
+Make High Score Public& \\
 \hline
 \end{tabular}
 
@@ -560,6 +669,9 @@ performance visibility, enhancing user privacy options.
 
 \textbf{Note:} The current system architecture does not follow or implement user needs and requirements highlighted in yellow. All other unmarked requirements and user needs are either mentioned in the system or have some form of implementation that can be checked. Unmarked columns are mentioned in the system architecture diagrams.
 \end{table}
+
+
+
 
 
 %\lipsum[1-3]

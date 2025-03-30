@@ -104,9 +104,8 @@ Our web-based platform offers a number of cognitive games that are designed to t
 \subsection{Technology Stack}
 \begin{itemize}
     \item \textbf{Frontend:} Built with Blazor for interactive C\#-based UI.
-    \item \textbf{Backend:} .NET (C\#) for business logic, user authentication, and statistics tracking.
+    \item \textbf{Backend:} .NET (C\#) Web API for business logic, user authentication, and statistics tracking.
     \item \textbf{Database:} SQLite for lightweight storage of user data and game progress.
-    \item \textbf{Security:} Implements password-protected authentication.
 \end{itemize}
 
 \subsection{Content \& Accessibility Boundaries}
@@ -137,7 +136,7 @@ Our web-based platform offers a number of cognitive games that are designed to t
      \label{fig:class_diagram}
 \end{figure}
 
-Figure~\ref{fig:class_diagram} illustrates the structure of the application, dividing it into client-side and server-side components. On the client side, frontend pages inherit from BlazerComponentBase, including AccountPage and StatisticsPage for tracking cognitive progress, SettingsPage for managing privacy settings, and game-specific pages like MathGamePage, SudokuGamePage, PairMatchingGamePage, and AimTrainerPage, all of which utilize TimerService for countdowns. Most .cs files related to these pages are located in the Client/Pages folder, TimerService is located in Client/Services.
+Figure~\ref{fig:class_diagram} illustrates the class structure of the application, dividing it into client-side and server-side components. On the client side, frontend pages inherit from BlazerComponentBase, including AccountPage and StatisticsPage for tracking cognitive progress, SettingsPage for managing privacy settings, and game-specific pages like MathGamePage, SudokuGamePage, PairMatchingGamePage, and AimTrainerPage, all of which utilize TimerService for countdowns. Most .cs files related to these pages are located in the Client/Pages folder, TimerService is located in Client/Services.
 
 On the server side, controllers in the 'Server/Controllers' folder, including AccountScoreController, MathGameController, and others, expose API endpoints. Business logic is handled by services such as MathGameService, SudokuService, AimTrainerService, PairUpService, AccountScoreService, and UserService, all located in the 'Server/Services folder'. Repositories like ScoreRepository and UserRepository in the 'Server/Repositories' folder manage database interactions.
 
@@ -149,54 +148,60 @@ Shared resources include models from the 'Shared/Models' folder and Data Transfe
     \begin{minipage}[b]{0.59\textwidth}
         \centering
         \textwidthdiagram{score_fetching_state.tex}
-        \caption{Frontend Score Fetching}
+        \caption{AimTrainerPage Score Fetching}
         \label{fig:score_fetching_state}
     \end{minipage}
     \hfil
     \begin{minipage}[b]{0.4\textwidth}
         \centering
         \textwidthdiagram{user_authentication_state.tex}
-        \caption{User Authentication State}
+        \caption{AccountAuthStateProvider State}
         \label{fig:user_authentication_state}
     \end{minipage}
 \end{figure}
 
 Figure~\ref{fig:score_fetching_state} outlines the asynchronous score
-retrieval process happening on the application frontend. This state is kept
-when navigating to a game page while authenticated. The state enters in a
-"Loading Scores" state where a background call (GetUserHighScoreAsync())
-fetches data. Depending on the outcome, the state branches into one
-of three paths: it moves to "No Scores Found" if no score is returned,
-"Encountered Error" if an error occurs, or "Showing Scores" if the scores
-are successfully loaded. The User is shown different UI elements based on
-the state. This structure ensures that the application handles different
-scenarios gracefully while providing clear feedback to the user.
+retrieval process by the AimTrainerPage component. Other Page components in
+the Game Pages subsystem manage state in the same way. The state enters in
+a "Loading Scores" state where a background call (GetUserHighScoreAsync())
+fetches data. Depending on the outcome, the state branches into one of three
+paths: it moves to "No Scores Found" if no score is returned, "Encountered
+Error" if an error occurs, or "Showing Scores" if the scores are successfully
+loaded. The User is shown different UI elements based on the AimTrainerPage
+state. This structure ensures that the application handles different scenarios
+gracefully while providing clear feedback to the user.
 
-The User Authentication diagram presented in
+The AccountAuthStateProvider State diagram presented in
 Figure~\ref{fig:user_authentication_state} defines the different possible
-states of user authentication. The user begins in an "Unauthenticated" state. When a
-user attempts to log in, the system remains in the same state if the login
-fails, or it transitions to the "Authenticated" state upon a successful
-login. A logoff action then reverts the system back to the "Unauthenticated"
-state. The defined transitions make asynchronous calls to the Auth API privided
-by our back-end solution. This model clearly delineates the transitions
-between being logged in and logged out, ensuring that the system maintains
-a secure and predictable user session management process.
+states of user authentication kept by AccountAuthStateProvider. The
+component begins in an "Unauthenticated" state. When an external call
+to mark the user as authenticated is made the component changes it's
+internal state to "Authenticated". If a MarkUserAsLoggedOut call is made
+and the AccountAuthStateProvider is in the "Authenticated" state the
+method then reverts the component back to the "Unauthenticated" state. The
+AccountAuthStateProvider component is user by the AccoutPage component. This
+model clearly delineates the transitions between being logged in and logged
+out, ensuring that the system maintains a secure and predictable user session
+management process.
 
 \subsection{Game States}
+
+These state diagrams are made to represent the internal state kept by
+components from the GamePage when the game is being played.
+
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{0.48\textwidth}
         \centering
         \textwidthdiagram{math_state.tex}
-        \caption{Math Game State Representation}
+        \caption{MathGamePage State Representation}
         \label{fig:math_state}
     \end{minipage}
     \hfil
     \begin{minipage}[b]{0.48\textwidth}
         \centering
         \textwidthdiagram{aim_trainer_state.tex}
-        \caption{Aim Trainer State Representation}
+        \caption{AimTrainerPage State Representation}
         \label{fig:aim_trainer_state}
     \end{minipage}
 \end{figure}
@@ -223,14 +228,14 @@ ensuring the game session concludes when the allotted time is exhausted.
     \begin{minipage}[b]{0.48\textwidth}
         \centering
         \textwidthdiagram{sudoku_state.tex}
-        \caption{Sudoku State Representation}
+        \caption{SudokuPage State Representation}
         \label{fig:sudoku_state}
     \end{minipage}
     \hfil
     \begin{minipage}[b]{0.48\textwidth}
         \centering
         \textwidthdiagram{pair_up_state.tex}
-        \caption{Pair Up State Representation}
+        \caption{PairUpPage State Representation}
         \label{fig:pair_up_state}
     \end{minipage}
 \end{figure}
@@ -278,7 +283,11 @@ In Figure~\ref{fig:ER_diagram}, the database structure of the system is displaye
     \label{fig:united_package}
 \end{figure}
 
-Figure~\ref{fig:united_package} provides an overview of the most significant parts of the codebase. This diagram includes some parts of the system that were not mentioned in the class diagram, such as Shared/Enums, Client/Components, and Server/Database. This addition provides a more detailed view of the system.
+Figure~\ref{fig:united_package} provides an overview of how the codebase has
+been organized and divided into packages. This diagram includes some parts of
+the system that were not mentioned in the class diagram, such as Shared/Enums,
+Client/Components, and Server/Database. This decision was made in order to
+simplify the class diagram while maintining the key logical elements.
 
 The diagram is divided into Client, Server, and Shared folders. The Shared package highlights common elements like data models and enumerations that are used across both the frontend and backend, ensuring consistency and reducing redundancy. The arrows indicate dependencies, illustrating how functionality is physically imported from one package to another
 
@@ -293,7 +302,7 @@ The diagram is divided into Client, Server, and Shared folders. The Shared packa
     \label{fig:server_component_diagram}
 \end{figure}
 
-Figure~\ref{fig:server_component_diagram} illustrates the server-side component architecture. Controllers provide API endpoints for frontend services, with each controller communicating with its corresponding service layer through well-defined interfaces. Services encapsulate the core business logic including game mechanics, user tracking, and account management. These services interact with other necessary services or repositories as needed. Data access is handled through repositories that abstract database operations.
+Figure~\ref{fig:server_component_diagram} illustrates the architecture of components from the Server package. Controllers provide API endpoints for frontend services, with each controller communicating with its corresponding service layer through well-defined interfaces. Services encapsulate the core business logic including game mechanics, user tracking, and account management. These services interact with other necessary services or repositories as needed. Data access is handled through repositories that abstract database operations.
 
 
 \textbf{Server Component Diagram to Class Diagram Mapping}
@@ -405,16 +414,23 @@ The following outlines the mapping between components from a server component di
         \end{itemize}
 \end{enumerate}
 
-
-Wl
-
-
 \begin{figure}[H]
     \centering
-    \textwidthdiagram{client_components.tex}
+     \begin{adjustbox}{width=0.92\paperwidth,center}
+         \inputdiagram{client_components.tex}
+     \end{adjustbox}
     \caption{Client Package Component Diagram}
     \label{fig:client_components}
 \end{figure}
+
+Figure~\ref{fig:client_components} visualizes the Client package.  The pages
+are divided into two subsytems: User Pages - for handling client-side
+authentication and account managment related views, Game Pages - for pages
+containing game implementations. The PageComponents interface with components
+from both the Account Services and Game Services subsystems.  The service
+components are responsible for storing game or account related data locally,
+substituting parts of game logic implementation or making HTTP requests to
+the Web API. Hence they require HTTP API Endpoints for their functionality.
 
 \section{Process View}
 
@@ -422,13 +438,14 @@ Wl
 
 \begin{figure}[H]
     \centering
-     \begin{adjustbox}{width=0.92\paperwidth,center}       \inputdiagram{aim_trainer_page_sequence.tex}
+     \begin{adjustbox}{width=0.92\paperwidth,center}
+         \inputdiagram{aim_trainer_page_sequence.tex}
      \end{adjustbox}
      \caption{\textit{Aim Trainer} Page Loading Sequence}
     \label{fig:aim_trainer_page_sequence}
 \end{figure}
 In order to visualize the way in which score fetching works for all of
-our games we will do a case analysis on the \textit{Aim Trainer} page.
+our games we will do a case analysis on the \textit{AimTrainerPage} component.
 Figure~\ref{fig:aim_trainer_page_sequence} illustrates the process flow
 when a player opens the Aim Trainer page. Initially, the page immediately
 requests the username from the authentication provider component. After
@@ -449,8 +466,6 @@ retrieved high score or a "Not Found" message if no score was found. Finally,
 the updated view is presented to the player. This is the way all of our
 games implement the score fetching functionality.
 
-TODO: specifying koki objecta grazina?
-
 \begin{figure}[H]
     \centering
      \begin{adjustbox}{width=0.92\paperwidth,center}
@@ -460,34 +475,52 @@ TODO: specifying koki objecta grazina?
     \label{fig:aim_trainer_set_score_sequence}
 \end{figure}
 
-This sequence diagram (Figure~\ref{fig:aim_trainer_set_score_sequence}) is an
-example of the process initiated by finishing a play session in one our games
-\textbf{WHILE AUTHENTICATED} (otherwise no such process occurs on the client
-side). Once the game ends, the page calls the client-side service to save the
-player's score asynchronously. The client service wraps the score within a
-DTO and forwards it via an HTTP POST request to an API endpoint provided by
-the Aim Trainer controller. The controller then uses the server-side service
-component to process the request. The server-side service unwraps the DTO
-and uses an interface provided by the Score Repository, which attempts
-to find the corresponding user within the given database context.  If the
-user is found, the repository attempts to add the score to the database;
-if an exception occurs during this process it is caught by the controller
-and the controller decides the appropriate HTTP error code to return (HTTP
-500 for DB exceptions, or HTTP 400 when a user is not found, indicating
-that a deceptive request might have been sent). If the user is found, and
-the insertion process is successful the controller returns a HTTP 200 OK
-code. Finally, the result is propagated back through the client service to
-the Aim Trainer page, updating the UI accordingly.
+This sequence diagram (Figure~\ref{fig:aim_trainer_set_score_sequence})
+is an example of the process initiated by finishing a play session in one
+our games \textbf{WHILE AUTHENTICATED} (otherwise no such process occurs
+on the client side). Once again we analyze only the AimTrainerPage, however
+other pages operate in a similar way. Once the game ends, the page calls the
+client-side service to save the player's score asynchronously. The client
+service wraps the score within a DTO and forwards it via an HTTP POST request
+to an API endpoint provided by the Aim Trainer controller. The controller
+then uses the server-side service component to process the request. The
+server-side service unwraps the DTO and uses an interface provided by the
+Score Repository, which attempts to find the corresponding user within the
+given database context.  If the user is found, the repository attempts to
+add the score to the database; if an exception occurs during this process it
+is caught by the controller and the controller decides the appropriate HTTP
+error code to return (HTTP 500 for DB exceptions, or HTTP 400 when a user
+is not found, indicating that a deceptive request might have been sent). If
+the user is found, and the insertion process is successful the controller
+returns a HTTP 200 OK code. Finally, the result is propagated back through
+the client service to the Aim Trainer page, updating the UI accordingly.
 
 \subsection{Activity Diagram}
 \begin{figure}[H]
     \centering
      \begin{adjustbox}{width=0.92\paperwidth,center}
-+        \inputdiagram{leaderboard_activity.tex}
+        \inputdiagram{leaderboard_activity.tex}
      \end{adjustbox}
     \caption{Leaderboard Loading Diagram}
     \label{fig:leaderboard_activity}
 \end{figure}
+
+To show the way in which leaderboard scores get loaded by the components in
+the Game Pages subsystem we show an example of how the PairUpPage component
+executes this functionality (Fig.~\ref{fig:leaderboard_activity}.  This process
+is initiated by a Player navigating to the Pair Up game page. The PairUpPage
+component then handles showing the Player the needed loading icons and making
+an asynchronous call chain to fetch the leaderboards from the API in parallel.
+The HTTP request is sent by the PairUpService(C) (C - indicating the client
+side service) component.  The PairUpController component handles receiving
+the request and passing it along to the PairUpService(S) (S - indicating
+the server side service).  PairUpService(S) then receives the leaderboard
+entries by using the ScoreRepository component and filters out the entries
+of players which have chosen to hide their high scores.  It then returns the
+entries to the controller which sends a response to the initial HTTP request.
+The PairUpService(C) parses the response and throws an exception if it did
+not receive a valid response.  The PairUpPage component then handles logic
+for updating the final page view.
 
 \section{Physical View}
 \subsection{Deployment}
@@ -500,14 +533,18 @@ the Aim Trainer page, updating the UI accordingly.
     \label{fig:deployment_diagram}
 \end{figure}
 
-Figure~\ref{fig:deployment_diagram} illustrates the architecture of the web application,
-which consists of a client-side Blazor WebAssembly (WASM) front-end and a back-end hosted on an Azure server. The client browser executes the .NET WASM
-runtime, running Client.dll as an executable. The backend operates in a Linux
-environment within Azure, where the .NET runtime hosts Server.dll. Data is
-persisted using an SQLite database. Communication between the client and
-server occurs over HTTPS, ensuring secure data transmission. This design
-enables a lightweight client while leveraging cloud infrastructure for
-back-end processing and storage of user and game data.
+Figure~\ref{fig:deployment_diagram} illustrates the deployment of the web
+application, which consists of a client-side Blazor WebAssembly (WASM)
+front-end app accessed from a browser and a back-end Web API hosted on
+an Azure server. The client browser runs the provided .NET WASM runtime,
+running Client.dll as an executable. The backend operates in a Linux (Ubuntu)
+environment within Azure, where the .NET runtime hosts the Server.dll
+executable. The Server.dll contains an entry point for the Web API, the
+Client.dll contains an entry point for the Blazor App. Data is persisted using
+an SQLite database (SQLite is built into the Server.dll). Communication
+between the client and server occurs over HTTPS, ensuring secure data
+transmission. This design enables a lightweight client while leveraging
+cloud infrastructure for back-end processing and storage of user and game data.
 
 \subsection{CI/CD}
 

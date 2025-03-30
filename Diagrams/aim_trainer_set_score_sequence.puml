@@ -1,6 +1,6 @@
 @startuml
 hide footbox
-participant "Aim Trainer Page" as Page
+participant "AimTrainerPage" as Page
 participant "AimTrainerService(C)" as ClientService
 participant AimTrainerController
 participant "AimTrainerService(S)" as ServerService

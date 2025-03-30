@@ -1,6 +1,6 @@
 @startuml score_fetching_state
 skinparam linetype ortho
-state "Score Fetching" as Fetching {
+state "AimTrainerPage" as Fetching {
     state "Loading Scores" as Loading
     state "No Scores Found" as Not_Found
     state "Showing scores" as Showing_Scores

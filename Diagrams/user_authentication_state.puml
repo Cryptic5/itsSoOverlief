@@ -1,11 +1,10 @@
 @startuml user_authentication_state
-state "User Authentication" as Authentication {
+state "AccountAuthStateProvider" as Authentication {
     state "Unauthenticated" as Unauthenticated
     state "Authenticated" as Authenticated
 
     [*] --> Unauthenticated
-    Unauthenticated --> Unauthenticated : Login()[failed]
-    Unauthenticated --> Authenticated : Login()[success]
-    Authenticated -right-> Unauthenticated : LogOff()
+    Unauthenticated --> Authenticated  : MarkUserAsAuthenticatedAsync()
+    Authenticated -right-> Unauthenticated : MarkUserAsLoggedOut()
 }
 @enduml

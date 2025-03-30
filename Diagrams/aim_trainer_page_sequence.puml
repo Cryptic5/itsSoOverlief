@@ -1,7 +1,7 @@
 @startuml
 hide footbox
 actor Player
-participant "Aim Trainer Page" as Page
+participant "AimTrainerPage" as Page
 participant "AccountAuthStateProvider" as AccountAuthStateProvider
 participant "AimTrainerService(C)" as ClientService
 participant AimTrainerController

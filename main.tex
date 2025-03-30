@@ -7,6 +7,7 @@
 %\usepackage{gentium}
 \usepackage{mathptmx} % Use Times Font
 
+
 \usepackage{comment}
 \usepackage[pdftex]{graphicx} % Required for including pictures
 \usepackage[pdftex,linkcolor=black,pdfborder={0 0 0}]{hyperref} % Format links for pdf
@@ -28,6 +29,8 @@
 \usepackage{float}
 \usepackage{indentfirst}
 \usepackage{subcaption}
+
+\usepackage{graphicx}
 
 %\usepackage{etoolbox} % Adds '\clearpage' to every '\section command' (newpage).
 %\pretocmd{\section}{\clearpage}{}{} 
@@ -257,10 +260,12 @@ game while clearly defining the conditions for continuation and termination.
 
 \begin{figure}[H]
     \centering
-    \textwidthdiagram{PNG/ER_diagram.png}
-    \caption{ER Diagram} 
-    \label{fig:ER diagram}
+    \includegraphics[width=\textwidth]{Diagrams/out/PNG/ER_diagram.png}
+    \caption{ER Diagram}
+    \label{fig:ER_diagram}
 \end{figure}
+
+In Figure~\ref{fig:ER diagram}, the database tables and their relationships are displayed, representing the structure of the system. The diagram models how users interact with different game types and how scores are stored.
 
 
 
@@ -279,31 +284,10 @@ Figure~\ref{fig:united_package} provides an overview of the most significant par
 
 The diagram is divided into Client, Server, and Shared folders. The Shared package highlights common elements like data models and enumerations that are used across both the frontend and backend, ensuring consistency and reducing redundancy. The arrows indicate dependencies, illustrating how functionality is physically imported from one package to another
 
-\begin{comment}
-
-\begin{figure}[H]
-    \centering
-    \textwidthdiagram{frontend_package.latex}
-    \caption{Frontend Package Diagram}
-    \label{fig:frontend_package}
-\end{figure}
-
-Figure~\ref{fig:frontend_package} illustrates the modular organization of the frontend application. It clearly separates concerns into reusable Components for UI elements, higher-level UI Modules representing specific screens or functionalities, and a Services Package that handles data fetching, state management, and interaction with the backend.
-
-
-\begin{figure}[H]
-    \centering
-    \textwidthdiagram{backend_package.latex}
-    \caption{Backend Package Diagram}
-    \label{fig:backend_package}
-\end{figure}
-
-Figure~\ref{fig:backend_package} delves into the internal structure of the backend system. It showcases a well-defined separation of responsibilities. Game Modules encapsulate the specific logic for each game. Repositories handle data persistence, abstracting away the underlying database interactions defined in the Database Context. The Statistics package focuses on calculating and managing game statistics. Finally, the Game Package seems to provide a more general layer for game management operations, potentially orchestrating interactions between other backend components. The dependencies clearly show how these packages interact to deliver the backend functionality.
-\end{comment}
 
 
 \subsection{Component Diagram}
-TODO: Augustas
+
 \begin{figure}[H]
     \centering
     \textwidthdiagram{server_component_diagram.latex}

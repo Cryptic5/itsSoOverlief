@@ -122,12 +122,12 @@ interface "Math Game API" as MathAPI
 interface "Pair Up API" as PairUpAPI
 interface "Aim Trainer API" as AimTrainerAPI
 
-AccountScoreCtrl --   ScoresAPI
-UserCtrl --  AuthAPI
-MathGameCtrl --  MathAPI
-SudokuGameCtrl --  SudokuAPI
-PairUpCtrl --  PairUpAPI
-AimTrainerCtrl --  AimTrainerAPI
+AccountScoreCtrl -- ScoresAPI
+UserCtrl -- AuthAPI
+MathGameCtrl -- MathAPI
+SudokuGameCtrl -- SudokuAPI
+PairUpCtrl -- PairUpAPI
+AimTrainerCtrl -- AimTrainerAPI
 
 
 

@@ -1,0 +1,134 @@
+@startuml components_simplified_diagram
+left to right direction
+
+package "Database" {
+    [UserDbContext] <<component>> as UserDb
+}
+
+package "Repositories" {
+    [User Repository] <<component>> as UserRepo
+    [Score Repository] <<component>> as ScoreRepo
+    
+}
+
+package "Services" {
+    component "User Services" <<subsystem>> {
+    [UserService] <<component>> as UserSvc
+    [UserTrackingService] <<component>> as UserTrackingSvc
+    [AccountScoreService] <<component>> as AccountScoreSvc
+
+    interface "User Tracking" <<interface>> as UserTracking
+    UserTrackingSvc -l-  UserTracking
+    UserSvc -r-( UserTracking
+    }
+    
+    component "Game Services" <<subsystem>> {
+    [AimTrainerService] <<component>> as AimTrainerSvc
+    [SudokuService] <<component>> as SudokuSvc
+    [PairUpService] <<component>> as PairUpSvc
+        component "Math Game Services" <<subsystem>> {
+        [MathCalculationService] <<component>> as MathCalcSvc
+        [MathGameService] <<component>> as MathGameSvc
+        [MathGameScoreboardService] <<component>> as MathGameScoreboardSvc
+        [MathGenerationService] <<component>> as MathGenSvc
+
+        interface "Math Game Calculation" <<interface>> as MathGameCalc
+        interface "Math Game Generation" <<interface>> as MathGameGen
+
+        MathGenSvc -l-  MathGameGen
+        MathGameSvc -r-(  MathGameGen
+        MathCalcSvc -r- MathGameCalc
+        MathGameSvc -l-(  MathGameCalc
+        
+
+
+    }
+}
+}
+
+    
+package "Controllers"  {
+    
+    component "Game Controllers" <<subsystem>> {
+        [MathGameController] <<component>> as MathGameCtrl
+        [SudokuController] <<component>> as SudokuGameCtrl
+        [PairUpController] <<component>> as PairUpCtrl
+        [AimTrainerController] <<component>> as AimTrainerCtrl
+    }
+    component "User Controllers" <<subsystem>> {
+        [UserController] <<component>> as UserCtrl
+        [AccountScoreController] <<component>> as AccountScoreCtrl
+    }
+}
+
+interface "Math Game Logic" <<interface>> as MathGameLogic
+
+interface "Math Game Statistics" <<interface>> as MathGameScore
+
+MathGameSvc -- MathGameLogic
+MathGameScoreboardSvc -- MathGameScore
+
+MathGameLogic )--  MathGameCtrl
+
+MathGameScore )--  MathGameCtrl
+
+
+interface "Pair Up Logic" <<interface>> as PairUpLogic
+
+PairUpSvc -- PairUpLogic
+PairUpLogic )-- PairUpCtrl
+
+interface "Aim Trainer Logic" <<interface>> as AimTrainerLogic
+
+AimTrainerSvc -- AimTrainerLogic
+AimTrainerLogic )-- AimTrainerCtrl
+
+interface "Sudoku Logic" <<interface>> as SudokuLogic
+
+SudokuSvc -- SudokuLogic
+SudokuLogic )-- SudokuGameCtrl
+
+interface "Account Statistics" <<interface>> as AccountStats
+
+AccountScoreSvc -d- AccountStats
+AccountStats )-- AccountScoreCtrl
+
+interface "Account Management" <<interface>> as AccountManagement
+UserSvc --  AccountManagement
+AccountManagement )--  UserCtrl
+
+interface "Math Game Statistics Storage" <<interface>> as MathGameScoreboardStorage
+
+MathGameScoreboardStorage )--  MathGameScoreboardSvc
+ScoreRepo --  MathGameScoreboardStorage
+
+
+interface "User Information" <<interface>> as UserInfo
+UserRepo -u-   UserInfo
+UserSvc -r-(  UserInfo
+
+interface "Score Information" <<interface>> as ScoreInfo
+UserDb -d- ScoreInfo
+ScoreRepo -l-(  ScoreInfo
+
+interface "User in Database Information" <<interface>> as UserInfoDb
+UserDb -- UserInfoDb
+UserInfoDb )-- UserRepo
+
+interface "Scores API" as ScoresAPI
+interface "Auth API" as AuthAPI
+interface "Sudoku Game API" as SudokuAPI
+interface "Math Game API" as MathAPI
+interface "Pair Up API" as PairUpAPI
+interface "Aim Trainer API" as AimTrainerAPI
+
+AccountScoreCtrl --   ScoresAPI
+UserCtrl --  AuthAPI
+MathGameCtrl --  MathAPI
+SudokuGameCtrl --  SudokuAPI
+PairUpCtrl --  PairUpAPI
+AimTrainerCtrl --  AimTrainerAPI
+
+
+
+@enduml

@@ -131,8 +131,7 @@ Our web-based platform offers a number of cognitive games that are designed to t
 
 \begin{figure}[H]
      \centering
-     \begin{adjustbox}{width=0.92\paperwidth,center}
-+        \inputdiagram{class_diagram.tex}
+     \begin{adjustbox}{width=0.92\paperwidth,center}        \inputdiagram{class_diagram.tex}
      \end{adjustbox}
      \caption{Class Diagram}
      \label{fig:class_diagram}
@@ -265,8 +264,7 @@ game while clearly defining the conditions for continuation and termination.
     \label{fig:ER_diagram}
 \end{figure}
 
-In Figure~\ref{fig:ER diagram}, the database tables and their relationships are displayed, representing the structure of the system. The diagram models how users interact with different game types and how scores are stored.
-
+In Figure~\ref{fig:ER_diagram}, the database structure of the system is displayed using an Entity-Relationship (ER) diagram. The diagram represents the entities (tables), their attributes, and the relationships between them. The database consists of five tables, each representing a key component of the system: User, AimTrainerScore, MathGameScore, PairUpScore, SudokuScore. Each score table has a direct relationship with the User table. Since a user can play multiple games and record multiple scores, the relationships are one-to-many. The Timestamp attribute is recorded directly within each score table.
 
 
 \section{Development View}
@@ -291,11 +289,11 @@ The diagram is divided into Client, Server, and Shared folders. The Shared packa
 \begin{figure}[H]
     \centering
     \textwidthdiagram{server_component_diagram.latex}
-    \caption{Simplified Component Diagram}
-    \label{fig:simp_component_diagram}
+    \caption{Server Component Diagram}
+    \label{fig:server_component_diagram}
 \end{figure}
 
-Figure~\ref{fig:simp_component_diagram} illustrates the individual component interactions of the app. The Frontend (WebUI and Navigation) interacts with Core Services via APIs for authentication, game data, statistics, and user management. Core Services (Game Controller, Authentication, Statistics, User Management) manage game logic, security, and data, relying on the Persistence layer. The Persistence layer (DAL, Score Repository, User Repository) handles database interactions through a common interface.
+Figure~\ref{fig:server_component_diagram} illustrates the individual component interactions of the app. The Frontend (WebUI and Navigation) interacts with Core Services via APIs for authentication, game data, statistics, and user management. Core Services (Game Controller, Authentication, Statistics, User Management) manage game logic, security, and data, relying on the Persistence layer. The Persistence layer (DAL, Score Repository, User Repository) handles database interactions through a common interface.
 
 \section{Process View}
 
@@ -498,56 +496,52 @@ authenticated players. Users can choose to make their high scores public
 or keep them private. This feature provides control over personal game
 performance visibility, enhancing user privacy options.
 
-
+\newpage
 \section{Traceability}
-\begin{table}[H]
+
+\begin{table}[]
 \begin{tabular}{|l|l|}
 \hline
-\multicolumn{1}{|c|}{\textbf{User Needs}}    & \multicolumn{1}{|c|}{\textbf{Requirements}}                   \\ \hline
-\multicolumn{2}{|c|}{\textbf{Players (Primary stakeholder)}}                                           \\ \hline
-Ease of Access (1.a)                         & F 1.a (Web-based application)                \\
-Variety of Games (1.b)                       & F 2.b (Display a variety of cognitive games), F 3 (Games) \\
-User Account (1.c)                           & F 2.a (Allow users to log in or sign up)     \\
-Progress Tracking (1.d)                      & F 4.e (Scoreboard for tracking progress)     \\
-Ranking System (1.e)                         & F 4.g (Update leaderboards after game)       \\
-Personalization (1.f)                        & F 4.b (Difficulty settings for games)        \\
-User-Friendly Interface (1.g)                & F 2 (Main Menu Page), NF 4 (Compatibility)   \\
-Game Description (1.h)                       & F 4.a (Each game must have a description)    \\
+\multicolumn{1}{|c|}{\textbf{Use Cases}}    & \multicolumn{1}{|c|}{\textbf{ System components}}                   \\ \hline
+\multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_account} Account Use Case} }                                          \\ \hline
+& \\
+& \\
+& \\
 \hline
-\multicolumn{2}{|c|}{\textbf{Developers (Primary Stakeholders)}}                                       \\
+\multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_account} Account Use Case} }                                      \\
 \hline
-\colorbox{yellow}{Clear Requirements \& Design (2.a)}           & \colorbox{yellow}{F 5.a (Functional \& technical specifications)} \\
-\colorbox{yellow}{Documentation (2.b)   }                       & \colorbox{yellow}{F 5.b (Code docs \& technical docs)  }        \\
-Testing Environment (2.c)                   & 
-F 5.c (Testing setup with CI integration)    \\
+& \\
+& \\
+& 
+\\
 \hline
 \multicolumn{2}{|c|}{\textbf{Administrators (Primary Stakeholders)}}                                   \\
 \hline
-User Management (3.a)                 &  F 2.c (Privacy settings for leaderboard)    \\
-\colorbox{yellow}{Game and Content Management (3.b)}            & \colorbox{yellow}{F 4 (User Experience Enhancements)  }         \\
-\colorbox{yellow}{System Monitoring (3.c)}   & \colorbox{yellow}{NF 2.b (Logging \& real-time monitoring), NF 3.a (Security)} \\
+&  \\
+& \\
+& \\
 \hline
 \multicolumn{2}{|c|}{\textbf{Shareholders / Investors (Primary Stakeholders)}}                         \\
 \hline
-\colorbox{yellow}{Profitability \& Growth (4.a) }               & \colorbox{yellow}{NF 1 (Performance requirements)  }            \\
-\colorbox{yellow}{Project Stability (4.b) }                     & \colorbox{yellow}{NF 2.a (90\% system uptime)}                  \\
-Reports and Statistics (4.c)                 & F 4.e (User performance tracking)            \\
+& \\
+& \\
+& \\
 \hline
 \multicolumn{2}{|c|}{\textbf{Partners - Educational Institutions (Secondary Stakeholders)}}            \\
 \hline
-Accessibility \& Reliability (5.a)           & NF 4 (Compatibility), NF 1 (Performance)     \\
-Data Analysis (5.b)                          & F 4.e (Tracking progress \& game statistics) \\
-Integration into Learning Process (5.c)      & F 4.a (Descriptions of game's benefits)      \\
+& \\
+& \\
+& \\
 \hline
 \multicolumn{2}{|c|}{\textbf{National Institute of Standards and Technology (Secondary Stakeholders)}} \\
 \hline
-\colorbox{yellow}{Password Security \& Encryption (6.a)}        & \colorbox{yellow}{NF 3 (Security)  }                            \\
+& \\
 \hline
 \multicolumn{2}{|c|}{\textbf{Compliance with local laws - GDPR (Secondary Stakeholders)}}              \\
 \hline
-\colorbox{yellow}{Data Protection Principles (7.a) }             &\colorbox{yellow}{ NF 5.d (Data Protection Principles) }         \\
-\colorbox{yellow}{Consent Management (7.b)   }                  & \colorbox{yellow}{NF 5.e (Consent Management)  }                \\
-\colorbox{yellow}{Data Subject Rights (7.c)  }                  & \colorbox{yellow}{NF 5.f (Data Subject Rights) }                \\
+&\\
+& \\
+& \\
 \hline
 \end{tabular}
 

@@ -1,0 +1,44 @@
+@startuml
+|Player|
+start
+:Navigates to the <i>Pair Up</i> page;
+|PairUpPage|
+fork
+    :Generate initial page
+    with loading icon;
+|Player|
+:Views inital page;
+fork again
+    |PairUpPage|
+    :Request
+    leaderboard entries;
+    |PairUpService(C)|
+    :HTTP GET leaderboard entries;
+    |PairUpController|
+    :Request leaderboard entries;
+    |PairUpService(S)|
+    :Request all entries;
+    |ScoreRepository|
+    :Query DB for scores;
+    :Return scores;
+    |PairUpService(S)|
+    :Filter out private entries;
+    :Return filtered entries;
+    |PairUpController|
+    :Send back entries;
+    |PairUpService(C)|
+    if (HTTP code: OK?) then (yes)
+        :Return entries to Page;
+    else (no)
+        :Throw;
+        |PairUpPage|
+        :Catch;
+    endif
+    |PairUpPage|
+    :Update page view
+    with leaderboard;
+end fork
+|Player|
+:Views the leaderboard;
+stop
+@enduml

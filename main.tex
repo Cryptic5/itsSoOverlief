@@ -96,7 +96,7 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
 \newpage
 
 \section{Context}
-Our web-based platform offers a number of cognitive games that are designed to test and enhance skills such as memory, attention, reaction time, and problem-solving. Users can access the system directly through a browser without needing to install any software or mobile apps. The platform provides customizable game difficulties and tracks user performance over time. While engaging, the platform prioritizes measurable cognitive improvement over entertainment.
+Our web-based platform offers a number of cognitive games that are designed to test and enhance skills such as memory, attention, reaction time, and problem-solving. Users can access the system directly through a browser without needing to install any software or mobile apps. The platform provides customizable game difficulties and tracks user performance over time. While engaging, the platform prioritizes measurable cognitive improvement over entertainment. 
 
 \subsection{Technology Stack}
 \begin{itemize}
@@ -122,6 +122,7 @@ Our web-based platform offers a number of cognitive games that are designed to t
 
 
 \section{Logical View}
+
 
 \subsection{Class Diagram}
 
@@ -252,8 +253,14 @@ the game ends. This design effectively captures the iterative nature of this
 game while clearly defining the conditions for continuation and termination.
 
 
+\subsection{ER Diagram}
 
-
+\begin{figure}[H]
+    \centering
+    \textwidthdiagram{ {PNG/ER_diagram.png} }
+    \caption{ER Diagram} 
+    \label{fig:ER diagram}
+\end{figure}
 
 
 
@@ -299,7 +306,7 @@ Figure~\ref{fig:backend_package} delves into the internal structure of the backe
 TODO: Augustas
 \begin{figure}[H]
     \centering
-    \textwidthdiagram{components_simplified_diagram.tex}
+    \textwidthdiagram{server_component_diagram.latex}
     \caption{Simplified Component Diagram}
     \label{fig:simp_component_diagram}
 \end{figure}

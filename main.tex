@@ -136,13 +136,15 @@ Our web-based platform offers a number of cognitive games that are designed to t
      \label{fig:class_diagram}
 \end{figure}
 
-Figure~\ref{fig:class_diagram} illustrates the class structure of the application, dividing it into client-side and server-side components. On the client side, frontend pages inherit from BlazerComponentBase, including AccountPage and StatisticsPage for tracking cognitive progress, SettingsPage for managing privacy settings, and game-specific pages like MathGamePage, SudokuGamePage, PairMatchingGamePage, and AimTrainerPage, all of which utilize TimerService for countdowns. Most .cs files related to these pages are located in the Client/Pages folder, TimerService is located in Client/Services.
+Figure~\ref{fig:class_diagram} illustrates the class structure of the project, it is divided into client, server, and shared components. On the client side, front-end pages inherit from BlazerComponentBase. AccountPage and StatisticsPage are for tracking cognitive progress, SettingsPage for managing privacy settings, and game specific pages like MathGamePage, SudokuGamePage, PairMatchingGamePage, and AimTrainerPage. All game pages utilize TimerService for countdowns. Page classes are located in the 'Client/Pages' folder, and TimerService is located in 'Client/Services'.
 
-On the server side, controllers in the 'Server/Controllers' folder, including AccountScoreController, MathGameController, and others, expose API endpoints. Business logic is handled by services such as MathGameService, SudokuService, AimTrainerService, PairUpService, AccountScoreService, and UserService, all located in the 'Server/Services folder'. Repositories like ScoreRepository and UserRepository in the 'Server/Repositories' folder manage database interactions.
+On the server side, controllers are in the 'Server / Controllers' folder, including AccountScoreController, MathGameController, and others, receives and handles incoming requests. Business logic is handled by services such as MathGameService, SudokuService, AimTrainerService, PairUpService, AccountScoreService, and UserService. All service classes are located in the ’Server/Services' folder. Repositories such as ScoreRepository and UserRepository are in the ’Server/Repositories’ folder, they manage database interactions.
+Shared resources UserScoreDto<T> and AverageScoreDto models are located in the ’Shared/Models’ folder. They facilitate communication between the front-end and back-end.
 
-Shared resources include models from the 'Shared/Models' folder and Data Transfer Objects (DTOs) such as UserScoreDto<T> and AverageScoreDto, which facilitate communication between the frontend and backend.
+\subsection{Client States}
 
-\subsection{Local User States}
+The relation between the components shown in the state diagrams and classes is explained in the Component section of the document.
+
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{0.59\textwidth}
@@ -187,7 +189,7 @@ management process.
 \subsection{Game States}
 
 These state diagrams are made to represent the internal state kept by
-components from the GamePage when the game is being played.
+the components of the GamePage when the game is being played.
 
 \begin{figure}[H]
     \centering
@@ -264,7 +266,7 @@ game while clearly defining the conditions for continuation and termination.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Diagrams/out/PNG/ER_diagram.png}
+    \includegraphics[width=\textwidth]{Diagrams/out/PNG/ER_Diagram_fix.drawio.png}
     \caption{ER Diagram}
     \label{fig:ER_diagram}
 \end{figure}
@@ -289,7 +291,7 @@ the system that were not mentioned in the class diagram, such as Shared/Enums,
 Client/Components, and Server/Database. This decision was made in order to
 simplify the class diagram while maintining the key logical elements.
 
-The diagram is divided into Client, Server, and Shared folders. The Shared package highlights common elements like data models and enumerations that are used across both the frontend and backend, ensuring consistency and reducing redundancy. The arrows indicate dependencies, illustrating how functionality is physically imported from one package to another
+The diagram is divided into Client, Server, and Shared folders. The Shared package highlights common elements like data models and enumerations that are used across both the frontend and backend, ensuring consistency and reducing redundancy. The arrows indicate dependencies, illustrating how functionality is physically imported from one package to another.
 
 
 
@@ -753,31 +755,40 @@ performance visibility, enhancing user privacy options.
 \hline
 \multicolumn{1}{|c|}{\textbf{Use Cases}}    & \multicolumn{1}{|c|}{\textbf{Coverage}}                   \\ \hline
 \multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_account} Account Use Case} }                                          \\ \hline
-Log in& Figure~\ref{fig:user_authentication_state} - \textit{Shows state transitions between authenticated and unauthenticated states, including login process}\\
+Log in& Handled by the UserService component (Server package)\newline
+Handled by the AccountService component (Client package)\newline
+Figure~\ref{fig:user_authentication_state} - \textit{Shows state transitions between authenticated and unauthenticated states, including login process}\\
 \hline
-Sign up& \textit{Not explicitly covered in the diagrams}\\
+Sign up& Handled by the UserService component (Server package)\newline
+Handled by the AccountService component (Client package)\\
 \hline
-Log out& Figure~\ref{fig:user_authentication_state} - \textit{Shows transition from authenticated to unauthenticated state during logout}\\
+Log out& Handled by the UserService component (Server package)\newline
+Handled by the AccountService component (Client package)\newline
+Figure~\ref{fig:user_authentication_state} - \textit{Shows transition from authenticated to unauthenticated state during logout}\\
 \hline
 \multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_game_page} Game Page Use Case} }                                      \\
 \hline
-Start game& \textit{Not explicitly covered in the diagrams}\\
+Start game& Handled by the components from the Game Pages subsystem (Client package)\\
 \hline
-Change Difficulty& \textit{Not explicitly covered in the diagrams}\\
+Change Difficulty& Handled by the components from the Game Pages subsystem (Client package)\\
 \hline
 \multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_high_score} High Score Module Use Case} }                                         \\
 \hline
 View shortened game statistics& Figure~\ref{fig:score_fetching_state} - \textit{Handles asynchronous score retrieval and display process}\newline 
-Figure~\ref{fig:client_components} - \textit{Details frontend components for displaying statistics} \\
+Figure~\ref{fig:client_components} - \textit{Details frontend components for displaying statistics}
+\\
 \hline
-View graph of game statistics& Figure~\ref{fig:score_fetching_state} - \textit{Fetches score data for graphical representation}\newline
-Figure~\ref{fig:client_components} - \textit{Shows UI components for graph rendering} \\
+View graph of game statistics& Handled by AccountScoreService (Client package)\newline
+Handled by AccountScoreService (Service package)\newline
+StatisticsPage component(Client package)\\
 \hline
-View timeline of played games& Figure~\ref{fig:score_fetching_state} - \textit{Retrieves historical score data for timeline display}\newline
-Figure~\ref{fig:client_components} - \textit{Details components for timeline visualization} \\
+View timeline of played games& Handled by AccountScoreService (Client package)\newline
+Handled by AccountScoreService (Service package)\newline
+StatisticsPage component(Client package)\\
 \hline
-View game statistics by difficulty& Figure~\ref{fig:score_fetching_state} - \textit{Handles filtered score data by difficulty level}\newline
-Figure~\ref{fig:client_components} - \textit{Includes filter components for statistics display} \\
+View game statistics by difficulty& Handled by AccountScoreService (Client package)\newline
+Handled by AccountScoreService (Service package)\newline
+StatisticsPage component(Client package)\\
 \hline
 \end{tabular}
 \end{table}
@@ -787,39 +798,50 @@ Figure~\ref{fig:client_components} - \textit{Includes filter components for stat
 \hline
 \multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_navigation} Page Navigation Use Case} }                          \\
 \hline
-Go to home page (game selection)& Figure~\ref{fig:class_diagram} - \textit{Shows page relationships including HomePage component}\newline
+Go to home page (game selection)& Provided by all \textit{Pages} components\newline
 Figure~\ref{fig:client_components} - \textit{Shows UI routing components}\\
 \hline
-Go to account page& Figure~\ref{fig:class_diagram} - \textit{Shows AccountPage component and relationships}\newline
-Figure~\ref{fig:client_components} - \textit{Shows account page components}\\
+Go to account page& Provided by all \textit{Pages} components\newline
+Handled by AccountPage component\newline
+Figure~\ref{fig:client_components} - \textit{Shows UI routing components}\\
 \hline
-Go to statistics page& Figure~\ref{fig:class_diagram} - \textit{Shows StatisticsPage component and relationships}\newline
-Figure~\ref{fig:client_components} - \textit{Details statistics page UI components}\\
+Go to statistics page& Provided by all \textit{Pages} components\newline
+Handled by StatisticsPage component\newline
+Figure~\ref{fig:client_components} - \textit{Shows UI routing components}\\
 \hline
-Go to settings page& Figure~\ref{fig:class_diagram} - \textit{Shows SettingsPage component and relationships}\newline
-Figure~\ref{fig:client_components} - \textit{Shows settings page UI components}\\
+Go to settings page& Provided by all \textit{Pages} components\newline
+Handled by SettingsPage component\newline
+Figure~\ref{fig:client_components} - \textit{Shows UI routing components}\\
 \hline
 \multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_game_selection} Game Selection Use Case} }           \\
 \hline
-Play "Aim Trainer"& Figure~\ref{fig:aim_trainer_state} - \textit{Details game states and transitions for the Aim Trainer game}\\
+Play "Aim Trainer"& AimTrainerPage component\newline
+Figure~\ref{fig:aim_trainer_state} - \textit{Details game states and transitions for the Aim Trainer game}\\
 \hline
-Play "Math Game"& Figure~\ref{fig:math_state} - \textit{Shows states and transitions for the Math Game}\\
+Play "Math Game"& MathGamePage component\newline
+Figure~\ref{fig:math_state} - \textit{Shows states and transitions for the Math Game}\\
 \hline
-Play "Pair Up"& Figure~\ref{fig:pair_up_state} - \textit{Illustrates memory matching game states and logic flow}\\
+Play "Pair Up"& PairUpPage component\newline
+Figure~\ref{fig:pair_up_state} - \textit{Illustrates memory matching game states and logic flow}\\
 \hline
-Play "Sudoku"& Figure~\ref{fig:sudoku_state} - \textit{Details puzzle game states and user interactions}\\
+Play "Sudoku"& SudokuPage component\newline
+Figure~\ref{fig:sudoku_state} - \textit{Details puzzle game states and user interactions}\\
 \hline
 \multicolumn{2}{|c|}{\textbf {Figure~\ref{fig:use_case_settings} Account Settings Use Case} }   \\
 \hline
-Privatize High Score& \textit{Not explicitly covered in the diagrams}\\
+Privatize High Score& AccountService component (Client package)\newline
+SettingsPage component (Client package)\newline
+UserService component (Server package)\\
 \hline
-Make High Score Public& \textit{Not explicitly covered in the diagrams}\\
+Make High Score Public& AccountService component (Client package)\newline
+SettingsPage component (Client package)\newline
+UserService component (Server package)\\
 \hline
 \end{tabular}
 
 \vspace{8pt} % value to increase the gap
 
-\textbf{Note:} The current system architecture does not fully implement some user needs and requirements as indicated. Use cases marked with \textit{"Not explicitly covered in the diagrams"} indicate architectural elements that may need additional documentation or implementation. All other requirements have corresponding architectural components as detailed above.
+\textbf{Note:} The traceability table assumes some coverage is implicit and can be further deduced by following interface relationships that are shown in the Client component diagram (Fig.~\ref{fig:client_components}) and the Server component diagram (Fig.\ref{fig:server_component_diagram}). 
 \end{table}
 
 

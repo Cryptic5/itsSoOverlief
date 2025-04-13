@@ -1,0 +1,165 @@
+%--------------------
+% Packages
+% -------------------
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage{gentium}
+\usepackage{mathptmx} % Use Times Font
+
+
+\usepackage{comment}
+\usepackage[pdftex]{graphicx} % Required for including pictures
+\usepackage[pdftex,linkcolor=black,pdfborder={0 0 0}]{hyperref} % Format links for pdf
+\usepackage{calc} % To reset the counter in the document after title page
+\usepackage{enumitem} % Includes lists
+
+\frenchspacing % No double spacing between sentences
+\linespread{1.2} % Set linespace
+\usepackage[a4paper, lmargin=0.1666\paperwidth, rmargin=0.1666\paperwidth, tmargin=0.1111\paperheight, bmargin=0.1111\paperheight]{geometry} %margins
+%\usepackage{parskip}
+
+\usepackage[all]{nowidow} % Tries to remove widows
+\usepackage[protrusion=true,expansion=true]{microtype} % Improves typography, load after fontpackage is selected
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage[export]{adjustbox}
+\usepackage{plantuml}
+\usepackage{float}
+\usepackage{indentfirst}
+\usepackage{subcaption}
+
+\usepackage{graphicx}
+
+%\usepackage{etoolbox} % Adds '\clearpage' to every '\section command' (newpage).
+%\pretocmd{\section}{\clearpage}{}{} 
+
+\newcommand{\inputdiagram}[1]{\input{Diagrams/out/#1}}
+\newcommand{\textwidthdiagram}[2][1]{%
+  \resizebox{#1\textwidth}{!}{\inputdiagram{#2}}%
+}
+
+%-----------------------
+% Set pdf information and add title, fill in the fields
+%-----------------------
+\hypersetup{ 	
+pdfsubject = {Program Systems Engineering},
+pdftitle = {itssoover},
+pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
+}
+
+%-----------------------
+% Begin document
+%-----------------------
+\begin{document} %All text i dokumentet hamnar mellan dessa taggar, allt ovanför är formatering av dokumentet
+
+\begin{titlepage}
+    \centering
+    % Remove page numbering from title
+    \thispagestyle{empty}
+    
+    % University name
+    {\Large VILNIAUS UNIVERSITETAS\\
+    Matematikos ir informatikos fakultetas}\par
+    
+    \vspace{3cm} % vertical space
+    
+    % Title of the work
+    {\Large 3\textsuperscript{rd} Laboratory Work}\par
+    \vspace{0.5cm}
+    {\Large \textbf{itssoover}}\par
+    {\Large \textbf{Requirements}}\par
+    
+    \vspace{3cm}
+    
+    % Authors
+    {\large
+    Ignas Časas\\
+    Mykolas Marius Budrys\\
+    Augustas Kniška
+    }\par
+    
+    \vspace{8cm}
+    
+    % Bottom of the page
+    {\large
+    Matematikos ir informatikos fakultetas\\
+    Vilniaus universitetas\\
+    Lietuva
+    }\par
+    
+    \vfill
+
+    \large 2025
+    
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Context}
+% Context of the system and the planned change, etc.
+Our web-based platform offers a number of cognitive games that are designed to test and enhance skills such as memory, attention, reaction time, and problem-solving. Users can access the system directly through a browser without needing to install any software or mobile apps. The platform tracks user performance over time. During engagement, the platform prioritizes measurable cognitive improvement over entertainment.
+
+\subsection{Planned implementation}
+Primary of the system correlates with the integration of difficulty options into our gaming platform. The variety of customized difficulties will now be offered for each game. Allowing the user to choose their challenge level based on their preference. The UI will include a button with text on the game's start page referring to the selected difficulty. 
+Secondary change is hashing user's private data. At the moment, user's passwords are stored in plain text. This is a profound security risk. User's passwords would get exposed in case of an unauthorized breakage into the database. Implementation of modern, robust hashing algorithms would significantly improve user base trust, and security by reducing the risk of password theft. 
+
+\subsection{Financial analysis}
+Financial analysis is a crucial process in all businesses when pivotal changes are being planned or considered. Giving thought to the planned implementation of our change, it is important that financial resources are considered. This part of our impact analysis overviews the duration of the planned implementation, team status and composition. Since the team is implementing the planned changes, they are not only responsible for the effective implementation, but also determining their hourly pay and the whole price for their service. This part of the analysis is useful for multiple aspects, such as determining the approximate price of the change, providing trust for shareholders, because they then have estimates from which to decide what decisions to make. Lastly, financial analysis helps investors evaluate the financial possibilities of the system and are the solutions based properly.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{lrrr}
+        \toprule
+        Worker & Hourly wage & Hours spent on the project & Overall price paid \\
+        \midrule
+        Project Manager & 15 € & 43 & 645 € \\
+        Architect & 13 € & 68 & 884 € \\
+        Data analytic & 12 € & 10 & 120 € \\
+        Database Engineer & 12 € & 14 & 168 € \\
+        UI/UX Designer & 11 € & 24 & 264 € \\
+        2 Testers & 9 € & 80 & 720 € \\
+        2 Back-end programmers & 13,5 € & 131 & 1768,5 € \\
+        2 Front-end programmers & 13,5 € & 24 & 324 € \\
+        \midrule
+        \textbf{Overall price:} \textbf{4893,5 €} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{comment}
+    kaip ir done????
+\end{comment}
+
+\subsection{Technological analysis}
+
+
+\subsection{Impact evaluation - positive aspect (User)}
+Letting users choose a difficulty based on their own needs leads to a more engaging user experience while using the platform. Users have different cognitive skill sets, so it would be in our interest to tinker a better experience for a variety of users. Easier game difficulty would help by not scare away newcomers, because at first the game's complexity and hardness could be intimidating. Less hard games would also help by building user's confidence and enjoyment. In contrast, for users that find easier modes less intriguing, harder difficulty would provide a better challenge and retain the user's attention to the platform.
+
+\subsection{Risk and solution possibility analysis}
+
+\subsection{Planned implementation work plan}
+
+
+
+\section{Static Model}
+% As defined in the ICONIX process, up to the robustness analysis.
+
+
+
+\section{Use Cases}
+% Behavioural description, as defined in the ICONIX process, up to the robustness analysis.
+
+\section{Tracebility}
+% Mapping with requirements as well as between the views.
+
+
+
+%\lipsum[1-3]
+
+
+
+\end{document}

@@ -29,13 +29,14 @@
 \usepackage{float}
 \usepackage{indentfirst}
 \usepackage{subcaption}
+\usepackage{booktabs}
 
 \usepackage{graphicx}
 
 %\usepackage{etoolbox} % Adds '\clearpage' to every '\section command' (newpage).
 %\pretocmd{\section}{\clearpage}{}{} 
 
-\newcommand{\inputdiagram}[1]{\input{Diagrams/out/#1}}
+\newcommand{\inputdiagram}[1]{\input{#1}}
 \newcommand{\textwidthdiagram}[2][1]{%
   \resizebox{#1\textwidth}{!}{\inputdiagram{#2}}%
 }
@@ -102,14 +103,68 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
 % Context of the system and the planned change, etc.
 Our web-based platform offers a number of cognitive games that are designed to test and enhance skills such as memory, attention, reaction time, and problem-solving. Users can access the system directly through a browser without needing to install any software or mobile apps. The platform tracks user performance over time. During engagement, the platform prioritizes measurable cognitive improvement over entertainment.
 
-\subsection{Planned implementation}
-Primary of the system correlates with the integration of difficulty options into our gaming platform. The variety of customized difficulties will now be offered for each game. Allowing the user to choose their challenge level based on their preference. The UI will include a button with text on the game's start page referring to the selected difficulty. 
-Secondary change is hashing user's private data. At the moment, user's passwords are stored in plain text. This is a profound security risk. User's passwords would get exposed in case of an unauthorized breakage into the database. During new account creation user password would need to be hashed before being saved into the database.
+% Reikia pamineti esminias projekto funkcijas
 
+
+
+
+
+\begin{comment}
+
+
+    sita dedam ar ne? Jo, dedam.
+\end{comment}
+
+\subsection{Technical change analysis}
+\subsubsection{Change requirements}
+Based on the planned implementation, the following technical requirements were identified:
+
+\begin{itemize}
+    \item  \textbf{Difficulty Option Implementation:}
+    \begin{itemize}
+        \item UI element (button) on every game start page to allow users to select their difficulty
+        \item The selected difficulty should be clearly show to the user on the game start page.
+        \item Upon starting a game, the system should start the game with parameters of the chosen difficulty.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Technical solution}
+\subsubsection{Difficulty option implementation}
+To implement different difficulty options for each cognitive skill training game, the following technical updates will be performed:
+
+\begin{enumerate}
+    \item \textbf{User interface updates:}
+    \begin{itemize}
+        \item UI elements will be implemented on the start page of each game to allow users to select the difficulty. This will involve a button which, when pressed, changes the difficulty.
+    	\item The selected difficulty level will be clearly displayed to the user on the game start page.
+    	\item When the user clicks the game start button, the selected difficulty will be passed to the game service.
+    \end{itemize}
+    \item \textbf{API updates:}
+    \begin{itemize}
+        \item The existing game API endpoint methods will be updated to accept an additional parameter for the chosen difficulty.
+    	\item The difficulty level received by the API will be passed to the corresponding service.
+    \end{itemize}
+    \item \textbf{Game logic updates:}
+    \begin{itemize}
+        \item Logic will be implemented within each game's logic component to adjust the difficulty by changing these parameters:
+    			\begin{itemize}
+    				\item \textbf{Math Game:} Range of numbers, mathematical operation possibilities.
+    				\item \textbf{Sudoku Game:} Number of initially completed cells, board size.
+    				\item \textbf{Pair Matching Game:} Number of cards.
+    				\item \textbf{Aim Trainer Game:} Size of the target, movement behaviour
+    			\end{itemize}
+    		\item Default parameter configurations will be created for each difficulty level.
+    	 
+    \end{itemize}
+    \item \textbf{Database updates:}
+    \begin{itemize}
+        \item The user's score for every difficulty level for each game will be stored in their user profile in the database. This will create a possibility to display scores and leaderboards for different difficulties in different game pages. 
+    \end{itemize}
+\end{enumerate}
 
 \subsection{Financial analysis}
 Financial analysis is a crucial process in all businesses when pivotal changes are being planned or considered. Giving thought to the planned implementation of our change, it is important that financial resources are considered. This part of our impact analysis overviews the duration of the planned implementation, team status and composition. Since the team is implementing the planned changes, they are not only responsible for the effective implementation, but also determining their hourly pay and the whole price for their service. This part of the analysis is useful for multiple aspects, such as determining the approximate price of the change, providing trust for shareholders, because they then have estimates from which to decide what decisions to make. Lastly, financial analysis helps investors evaluate the financial possibilities of the system and are the solutions based properly.
-
+\newpage % Uzdejau nes lentele persikele i kita skyriu
 \begin{table}[h!]
     \centering
     \begin{tabular}{lrrr}
@@ -125,7 +180,7 @@ Financial analysis is a crucial process in all businesses when pivotal changes a
         2 Back-end programmers & 13,5 € & 131 & 1768,5 € \\
         2 Front-end programmers & 13,5 € & 24 & 324 € \\
         \midrule
-        \textbf{Overall price:} \textbf{4893,5 €} \\
+        \textbf{Overall price:} & & & \textbf{4893,5 €} \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -134,25 +189,33 @@ Financial analysis is a crucial process in all businesses when pivotal changes a
     kaip ir done????
 \end{comment}
 
-\subsection{Technical analysis}
-\subsubsection{Change requirements}
-Based on the planned implementation, the following technical requirements were identified:
 
-\begin{enumerate}
-    \item  \textbf{Difficulty Option Implementation:}
-    \begin{itemize}
-        \item UI element (button) on every game start page to allow users to select their desired difficulty
-        \item
-    \end{itemize}
-\end{enumerate}
-\subsubsection{Technical solution}
+\subsection{Planned implementation}
+The primary change of the system is the implementation of difficulty options into our gaming platform. The variety of customized difficulties will now be offered for each game, allowing the user to choose a difficulty based on their abilities. The UI will include a button with text on the game's start page referring to the selected difficulty. 
 
-\subsection{Impact evaluation - positive aspect (User)}
+The secondary change is hashing user's private data. At the moment, user's passwords are stored in plain text. This is a profound security risk. User's passwords would get exposed in case of an unauthorized breakage into the database. During new account creation user password would need to be hashed before being saved into the database.
+
+% Write feature boundries.
+
+\subsection{Alternatives}
+This section covers some of the alternative changes that could have been done instead of doing the changes being done by our team. It covers the positive and negative aspects that could have accured in alternate cases. Depicted alternatives include implemented the changes by ourselfs, not doing the changes at all, transfering the changes to a third-party company, and lastly .
+% Kuom alternatyva padetu/pakenktu sistemai in the long run
+
+% Cover which aspects of the system will be impacted, changed wehn the change occures.
+
+\subsubsection{Impact evaluation (by us) - positive aspect (User)}
 Letting users choose a difficulty based on their own needs leads to a more engaging user experience while using the platform. Users have different cognitive skill sets, so it would be in our interest to tinker a better experience for a variety of users. Easier game difficulty would help by not scare away newcomers, because at first the game's complexity and hardness could be intimidating. Less hard games would also help by building user's confidence and enjoyment. In contrast, for users that find easier modes less intriguing, harder difficulty would provide a better challenge and retain the user's attention to the platform.
-Implementation of modern, robust hashing algorithms would significantly improve user base trust, and security by reducing the risk of password theft. For bad actors, it would be impossible to reverse the hashed password into the original one. This change makes the platform more appealing to users that are more concerned with their privacy.
 
-\subsection{Impact evaluation - negative aspect (User)}
-One problem with difficulty modes is that it is tough to standardized it across all games. This could lead to a situation where a user could feel like that a "Normal" in one game is not equivalent to a "normal" in another game. From user's perspective this can lead to frustrations and getting discouraged at the system.
+Implementation of modern, robust hashing algorithms would significantly improve+ user's base trust, and system's security by reducing the risk of password theft. For bad actors, it would be impossible to reverse the hashed password into the original one. This change makes the platform more appealing to users that are more concerned with their privacy.
+
+
+
+\subsubsection{Impact evaluation (by us) - negative aspect (User)}
+One problem with difficulty modes is that it is tough to standardized it smoothly across all games. This could lead to situations where a "Normal" in one game is not equivalent to a "normal" in another game. Another problem with difficulty levels is the risk that the user by selects a harder mode, will find it too challenging. From their perspective, this can lead to frustrations, and getting a bad impression about the system.
+
+For password hashing feature implementation users with account will encounter problems. Some kind of forced password resets will be necessary that could lead the user with temporary inconvenience or frustration.
+
+
 
 
 \subsection{Risk and solution possibility analysis}
@@ -165,9 +228,19 @@ One problem with difficulty modes is that it is tough to standardized it across 
 
 \section{Static Model}
 % As defined in the ICONIX process, up to the robustness analysis.
+We started our requirements analysis by looking at the current system. First, we look at the database tables to identify the stored entities. Then we looked at our functional requirements and tried to pick out the main entities there. We constructed our domain model based on these sources, adjusting it along the way.
+
+\subsection{Domain model}
 
 
+\begin{figure}[H]
+    \centering
+    \textwidthdiagram{domain_model.tex}
+    \caption{Domain model}
+    \label{fig:domain_model}
+\end{figure}
 
+Fig~\ref{fig:domain_model} shows the domain model we've constructed. 
 \section{Use Cases}
 % Behavioural description, as defined in the ICONIX process, up to the robustness analysis.
 

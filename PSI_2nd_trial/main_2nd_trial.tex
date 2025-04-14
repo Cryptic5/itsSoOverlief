@@ -99,7 +99,7 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
 \newpage
 
 \section{Context}
-Our web-based platform offers a number of cognitive games that are designed to test and enhance skills such as memory, attention, reaction time, and problem-solving. Users can access the system directly through a browser without needing to install any software or mobile apps. The platform provides customizable game difficulties and tracks user performance over time. While engaging, the platform prioritizes measurable cognitive improvement over entertainment. 
+Our web-based application offers a variety of cognitive games. They are designed to improve cognitive skills like memory, attention, reaction time and math problem-solving skills. The platform is designed to be  accessible from anywhere with only a browser, no additional software is needed. Platform's games have different difficulties, users are able to choose the game's complexity based on their preference. Registered users have the luxury of tracking their own progress throughout the lifespan of their account. The games are designed to be engaging; however, the priority is to measure and boost cognitive improvement rather than just entertainment.
 
 \subsection{Technology Stack}
 \begin{itemize}
@@ -136,10 +136,16 @@ Our web-based platform offers a number of cognitive games that are designed to t
      \label{fig:class_diagram}
 \end{figure}
 
-Figure~\ref{fig:class_diagram} illustrates the class structure of the project, it is divided into client, server, and shared components. On the client side, front-end pages inherit from BlazerComponentBase. AccountPage and StatisticsPage are for tracking cognitive progress, SettingsPage for managing privacy settings, and game specific pages like MathGamePage, SudokuGamePage, PairMatchingGamePage, and AimTrainerPage. All game pages utilize TimerService for countdowns. Page classes are located in the 'Client/Pages' folder, and TimerService is located in 'Client/Services'.
+Figure~\ref{fig:class_diagram} illustrates the real class structure of the repository. Each class is a representation of an actual class in the project. The code-base is separated into three parts: client, server, and shared components. Not all architecture details are depicted in the diagram, but major elements are shown that illustrate the main underlying implementation. 
 
-On the server side, controllers are in the 'Server / Controllers' folder, including AccountScoreController, MathGameController, and others, receives and handles incoming requests. Business logic is handled by services such as MathGameService, SudokuService, AimTrainerService, PairUpService, AccountScoreService, and UserService. All service classes are located in the ’Server/Services' folder. Repositories such as ScoreRepository and UserRepository are in the ’Server/Repositories’ folder, they manage database interactions.
-Shared resources UserScoreDto<T> and AverageScoreDto models are located in the ’Shared/Models’ folder. They facilitate communication between the front-end and back-end.
+
+Client-side page components inherit from BlazerComponentBase. AccountPage and StatisticsPage are for tracking cognitive progress, SettingsPage is for the user's privacy settings. MathGamePage, SudokuGamePage, PairMatchingGamePage, and AimTrainerPage are for game-specific functionality. TimerService is used by each game to track time. All the pages are located in the "Client/Pages" folder, while TimeService is in the "Client/Services".
+
+
+Server-side has three main parts. First, are the controllers like AccountScoreController, MathGameController, etc. They help to handle the incoming requests from the user side. Controllers are saved in the "Server/Controllers" folder. Second are the services like MathGameService, SudokuService, AimTrainerService, PairUpService, AccountScoreService and UserService. They handle the backend logic. Services are located in the "Server/Services" folder. Lastly, the Repositories like ScoreRepository and UserRepository. They handle the interactions with the database. Repositories are located in the "Server/Repositories" folder.
+
+
+The shared resources mainly help by providing data models so that the server side and client side could easily interact. From the client class diagram, these would be the UserScoreDto<T> and AverageScoreDtomodels. They are located in the "Shared/Models" folder.
 
 \subsection{Client States}
 
@@ -285,15 +291,17 @@ In Figure~\ref{fig:ER_diagram}, the database structure of the system is displaye
     \label{fig:united_package}
 \end{figure}
 
-Figure~\ref{fig:united_package} provides an overview of how the codebase has
-been organized and divided into packages. This diagram includes some parts of
-the system that were not mentioned in the class diagram, such as Shared/Enums,
-Client/Components, and Server/Database. This decision was made in order to
-simplify the class diagram while maintining the key logical elements.
+Figure~\ref{fig:united_package} provides an overview of how the codebase organization. For clarity and less abstraction, this diagram has some parts of the system that were not mentioned in the class diagram, such as "Shared/Enums", "Client/Components", and "Server/Database". This decision was made in order to simplify the class diagram while maintaining the key logical elements, but for the deployment diagram purposes they were added to provide more detail.
 
-The diagram is divided into Client, Server, and Shared folders. The Shared package highlights common elements like data models and enumerations that are used across both the frontend and backend, ensuring consistency and reducing redundancy. The arrows indicate dependencies, illustrating how functionality is physically imported from one package to another.
+Similarly, as in the class diagram, the package diagram is split into Shared, Server, and Client folders. Not all folders are listed in the diagram, but the most important ones are. This was done to reduce clutter and make it easier to understand visually.
 
+The Shared package highlights common elements across the project, such as data models and enumerations. A lot of parts in the client and server use these folders.
 
+The server has controllers that await the client side requests, the controllers interact with services to perform certain tasks, such as saving a game record into the database. In this case, services will access the repositories' folder, which in turn will save a record in the database.
+
+The Client has pages, components, and services. Pages interact with components and services, services send the requests to the server controllers.
+
+The arrows indicate dependencies and illustrate how functionality is physically imported from one package to another.
 
 \subsection{Component Diagrams}
 

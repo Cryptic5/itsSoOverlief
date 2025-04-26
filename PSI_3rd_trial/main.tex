@@ -6,6 +6,21 @@
 \usepackage[T1]{fontenc}
 %\usepackage{gentium}
 \usepackage{mathptmx} % Use Times Font
+\newcommand{\heading}[1]{\vspace{1em}\noindent\textbf{#1}\par\vspace{0.5em}}
+
+%1. Choose a change request for the system.
+%2. Perform impact analysis, define implementation alternatives, estimates.
+%3. Define a project plan for implementing the change.
+%4. Elaborate the requirements using the ICONIX process.
+%   The expected output: Change request and its impact analysis document, project
+%   plan document and the requirements document.
+%
+%Suggested requirements document structure:
+%1. Context. Context of the system and the planned change, etc.
+%2. Static Model. As defined in the ICONIX process, up to the robustness analysis.
+%3. Use Cases. Behavioural description, as defined in the ICONIX process, up to the robustness analysis.
+%4. Traceability. Mapping with requirements as well as between the views.
+%This document only covers the parts of the model, that are necessary to describe the requirements in question.
 
 
 \usepackage{comment}
@@ -89,7 +104,6 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
     Vilniaus universitetas\\
     Lietuva
     }\par
-    
     \vfill
 
     \large 2025
@@ -101,19 +115,15 @@ pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
 
 \section{Context}
 % Context of the system and the planned change, etc.
-Our web-based platform offers a number of cognitive games that are designed to test and enhance skills such as memory, attention, reaction time, and problem-solving. Users can access the system directly through a browser without needing to install any software or mobile apps. The platform tracks user performance over time. During engagement, the platform prioritizes measurable cognitive improvement over entertainment.
-
-% Reikia pamineti esminias projekto funkcijas
-
+Our web-based application offers a variety of cognitive games. They are designed to improve cognitive skills like memory, attention, reaction time and math problem-solving skills. The platform is designed to be  accessible from anywhere with only a browser, no additional software is needed. Platform's games have different difficulties, users are able to choose the game's complexity based on their preference. Registered users have the luxury of tracking their own progress throughout the lifespan of their account. The games are designed to be engaging; however, the priority is to measure and boost cognitive improvement rather than just entertainment.
+% Reikia pamineti esminias projekto funkcijas (Done)
 
 
+\section{Planned implementation}
+The primary change of the system is the implementation of difficulty options into our gaming platform. The variety of customized difficulties will now be offered for each game, allowing the user to choose a difficulty based on their abilities. The UI will include a button with text on the game's start page referring to the selected difficulty. 
 
+The secondary change is hashing user's private data. At the moment, user's passwords are stored in plain text. This is a profound security risk. User's passwords would get exposed in case of an unauthorized breakage into the database. During new account creation user password would need to be hashed before being saved into the database.
 
-\begin{comment}
-
-
-    sita dedam ar ne? Jo, dedam.
-\end{comment}
 
 \subsection{Technical change analysis}
 \subsubsection{Change requirements}
@@ -125,6 +135,13 @@ Based on the planned implementation, the following technical requirements were i
         \item UI element (button) on every game start page to allow users to select their difficulty
         \item The selected difficulty should be clearly show to the user on the game start page.
         \item Upon starting a game, the system should start the game with parameters of the chosen difficulty.
+    \end{itemize}
+    \item  \textbf{User Data Hashing Implementation:}
+    \begin{itemize}
+        \item During new account creation, the user's password must be hashed before being stored in the database.
+        \item When a user attempts to log in, the system must hash the entered password and compare it to the stored hash in the database.
+        \item The system should utilize a strong and widely accepted hashing algorithm.
+        \item Existing user passwords in the database need to be migrated to the new hashing system.
     \end{itemize}
 \end{itemize}
 
@@ -162,6 +179,37 @@ To implement different difficulty options for each cognitive skill training game
     \end{itemize}
 \end{enumerate}
 
+\subsubsection{User Data Hashing}
+To enhance the security of user passwords and protect their data, the following technical updates will be performed:
+
+\begin{enumerate}
+    \item \textbf{Hashing Algorithm Implementation:}
+    \begin{itemize}
+        \item A secure hashing algorithm, such as Argon2, bcrypt, or scrypt, will be implemented within the user authentication service.
+    	\item This algorithm will be used with plain-text passwords to turn them into irreversible hash values.
+    \end{itemize}
+    \item \textbf{Registration process updates:}
+    \begin{itemize}
+        \item The password of a new user will be combined with a newly generated salt.
+    	\item The password and salt combination will then be passed through the chosen hashing algorithm to produce the password hash.
+        \item The generated salt and the resulting hash will be stored in the database.
+    \end{itemize}
+    \item \textbf{Login authentication process updates:}
+    \begin{itemize}
+        \item The system retrieves the stored salt when a user tries to log in.
+    	\item The salt will be combined with the password entered by the user.
+        \item This combined value will then be hashed using the same algorithm used during registration.
+        \item The resulting hash will be compared to the one stored in the database.
+        \item Login will only be successful if the generated hash matches the stored hash.
+    \end{itemize}
+    \item \textbf{Database Updates:}
+    \begin{itemize}
+        \item A secure process will be implemented to migrate existing passwords to the new hashing system.
+    	\item This process will involve retrieving each user's current password, generating a unique salt for them, hashing the password and salt combination, and then updating the user's record in the database with the new salt and hash.
+        \item Migrated passwords will be securely overwritten or deleted after the migration process is complete.
+    \end{itemize}
+\end{enumerate}
+
 \subsection{Financial analysis}
 Financial analysis is a crucial process in all businesses when pivotal changes are being planned or considered. Giving thought to the planned implementation of our change, it is important that financial resources are considered. This part of our impact analysis overviews the duration of the planned implementation, team status and composition. Since the team is implementing the planned changes, they are not only responsible for the effective implementation, but also determining their hourly pay and the whole price for their service. This part of the analysis is useful for multiple aspects, such as determining the approximate price of the change, providing trust for shareholders, because they then have estimates from which to decide what decisions to make. Lastly, financial analysis helps investors evaluate the financial possibilities of the system and are the solutions based properly.
 \newpage % Uzdejau nes lentele persikele i kita skyriu
@@ -185,36 +233,56 @@ Financial analysis is a crucial process in all businesses when pivotal changes a
     \end{tabular}
 \end{table}
 
-\begin{comment}
-    kaip ir done????
-\end{comment}
-
-
-\subsection{Planned implementation}
-The primary change of the system is the implementation of difficulty options into our gaming platform. The variety of customized difficulties will now be offered for each game, allowing the user to choose a difficulty based on their abilities. The UI will include a button with text on the game's start page referring to the selected difficulty. 
-
-The secondary change is hashing user's private data. At the moment, user's passwords are stored in plain text. This is a profound security risk. User's passwords would get exposed in case of an unauthorized breakage into the database. During new account creation user password would need to be hashed before being saved into the database.
-
 % Write feature boundries.
 
-\subsection{Alternatives}
-This section covers some of the alternative changes that could have been done instead of doing the changes being done by our team. It covers the positive and negative aspects that could have accured in alternate cases. Depicted alternatives include implemented the changes by ourselfs, not doing the changes at all, transfering the changes to a third-party company, and lastly .
+\section{Alternatives}
+This section covers some of the alternative changes that could have been done instead of making them ourselves. Alternatives include implementing the changes ourselves, transferring the changes to a third-party company, or making no changes at all.
+
 % Kuom alternatyva padetu/pakenktu sistemai in the long run
-
 % Cover which aspects of the system will be impacted, changed wehn the change occures.
+%\subsection{Impact evaluation from User's perspective}
 
-\subsubsection{Impact evaluation (by us) - positive aspect (User)}
-Letting users choose a difficulty based on their own needs leads to a more engaging user experience while using the platform. Users have different cognitive skill sets, so it would be in our interest to tinker a better experience for a variety of users. Easier game difficulty would help by not scare away newcomers, because at first the game's complexity and hardness could be intimidating. Less hard games would also help by building user's confidence and enjoyment. In contrast, for users that find easier modes less intriguing, harder difficulty would provide a better challenge and retain the user's attention to the platform.
+\subsection{Changes done by us (positive aspect)}
 
-Implementation of modern, robust hashing algorithms would significantly improve+ user's base trust, and system's security by reducing the risk of password theft. For bad actors, it would be impossible to reverse the hashed password into the original one. This change makes the platform more appealing to users that are more concerned with their privacy.
+Letting users choose a difficulty based on their own needs leads to a more engaging user experience while using the platform. Users have different cognitive skill sets, so it would be in our interest to tinker a better experience for a variety of users. Easier game difficulty would help by not scare away newcomers, because at first the game's complexity and hardness could be intimidating. Less hard games would also help by building user's confidence and enjoyment. In contrast, for users that find easier modes less intriguing, harder difficulty would provide a better challenge and retain the user's attention to the platform, since users would stay engaged at their own pace.
+
+Implementation of modern, robust hashing algorithms would significantly improve user's base trust, and system's security by reducing the risk of password theft. For bad actors, it would be impossible to reverse the hashed password into the original one. This change makes the platform more appealing to users that are more concerned with their privacy. 
 
 
+\subsection{Changes done by us (negative aspect)}
 
-\subsubsection{Impact evaluation (by us) - negative aspect (User)}
-One problem with difficulty modes is that it is tough to standardized it smoothly across all games. This could lead to situations where a "Normal" in one game is not equivalent to a "normal" in another game. Another problem with difficulty levels is the risk that the user by selects a harder mode, will find it too challenging. From their perspective, this can lead to frustrations, and getting a bad impression about the system.
+One problem with difficulty modes is that it is tough to standardized it smoothly across all games. This could lead to situations where a "Normal" in one game is not equivalent to a "normal" in other game. Another problem with difficulty levels is the risk that the user by selects a harder mode, will find it too challenging. From their perspective, this can lead to frustrations, and getting a bad impression, which harms their opinion about the system.
 
-For password hashing feature implementation users with account will encounter problems. Some kind of forced password resets will be necessary that could lead the user with temporary inconvenience or frustration.
+For password hashing feature implementation users with account will encounter problems. Some kind of forced password resets will be necessary that could lead the users with temporary inconvenience or frustration. In worst case scenario users that get annoyed at the reset might abandon the site before logging back in.
 
+
+\subsection{Changes done by a third-party (positive aspect)}
+
+Outside help could bring about new and fresh ideas that may lead to positive changes getting implemented in the system. Choosing the right third-party that worked on similar features could bring smoother, more polished user experience as they already know how to avoid common pitfalls. This makes the system have fewer bugs and positive user experience.
+
+Whilst the third party works on the changes, the main team's time could be used for something extra, like new game-modes, community tools or other features, allowing more work to be done for the platform.
+
+\subsection{Changes done by a third-party (negative aspect)}
+
+Working with another team could cause a lot of mix-ups, unclear requirements. Difficulties are tough to standardize, this can result in features that do not match user expectations. Any changes that need to be fastly implemented could become slower, leading to users waiting.
+
+The vendor could miss deadlines, important fixes or updates could get stuck, leaving users waiting. This can affect user retention, leading to a smaller user base.
+
+With users' unencrypted data, letting outsiders handle password hashing leaves a lot of space for slip-ups. This can lead to broken users’ trust, if any logins or data are leaked.
+
+
+\subsection{Changes are not implemented (positive aspect)}
+
+Keeping the system means that nothing new is added, everything stays the same, no new menus or pages, so there is no hinderance in user's daily use. No hassle with resetting user's credentials. So users can carry on using the system without any interruptions.
+
+With no new code lines for difficulty addidions or password hashing the system remains as it is, so no new bugs and only the expected system performance, leading to better stability and less system downtime. Not adding new features leaves time and resources that can be used to improve the system. The team could spend much more time on testing and fixing previous bugs, or try to work on new features.
+
+
+\subsection{Changes are not implemented (negative aspect)}
+
+If we don't implement the changes' user base numbers could hinder. With no implementation of adjustable difficulties, other platforms could look more appealing to users looking for a better experience. New players may decide to quit because the game is too hard. Senior users or hardcore players might get bored and quit because the games are too easy.
+
+A problem occurs if the passwords are left unhashed. One safety concern is if the plain user passwords get leaked. Furthermore, if users reuse their passwords, other online accounts could get compromised. This can lead to severe user retention and damage to the platform's reputation.
 
 
 
@@ -230,6 +298,12 @@ For password hashing feature implementation users with account will encounter pr
 % As defined in the ICONIX process, up to the robustness analysis.
 We started our requirements analysis by looking at the current system. First, we look at the database tables to identify the stored entities. Then we looked at our functional requirements and tried to pick out the main entities there. We constructed our domain model based on these sources, adjusting it along the way.
 
+\subsection{Requirements} % Kazkaip kitaip reiketu uzvadinti
+
+
+
+%（づ￣3￣）づ╭❤️～
+
 \subsection{Domain model}
 
 
@@ -240,8 +314,122 @@ We started our requirements analysis by looking at the current system. First, we
     \label{fig:domain_model}
 \end{figure}
 
-Fig~\ref{fig:domain_model} shows the domain model we've constructed. 
+Fig~\ref{fig:domain_model} shows the domain model we've constructed. TODO.
+
 \section{Use Cases}
+%https://emokymai.vu.lt/pluginfile.php/555085/mod_resource/content/1/2007-Rosenberg-Use_Case_Driven_Object_Modeling_with_UML__Theory_and_Practice-ICONIX.pdf
+%d=====(￣▽￣*)b
+%╰(￣ω￣ｏ)
+%(✿◕‿◕✿)
+
+\subsection{Authentication package}
+
+\subsubsection{Log in}
+
+\heading{Basic course:}
+The system displays the account page. The player types in his username and password in the fields displayed in the login section on the account page. The player clicks the submit button. The system checks if a matching username and password combination exists. The System displays the home page and a message indicating that the login was successful.
+
+\heading{Alternate course (No matching combination was found):}
+The system displays the account page and a message indicating that no such combination was found.
+
+\heading{Alternate course (The user is already logged in):}
+The system ignores the request and displays the home page.
+
+\subsubsection{Sign up}
+
+\heading{Basic course:}
+The system displays the account page. The player types in his name, surname, username, password in the fields displayed in the sign up section on the account page. The player clicks the submit button. The system checks if the username is unique and the password matches security requirements (length, symbols used). The system displays the account page and a message indicating success.
+
+\heading{Alternate course (username not unique):}
+The system displays the account page and a message stating that the operation failed because the username already exists.
+
+\heading{Alternate course (password too weak):}
+The system displays the account page and a message stating that the operation failed because the submitted password is too weak and a list of password requirements.
+
+\heading{Alternate course (player is already logged in):}
+The system ignores the request and displays the home page.
+
+\subsubsection{Log out}
+
+\heading{Basic course:}
+The system displays the account page. The player clicks the log off button. The system logs the player out and displays the home page and a message indicating success.
+
+\heading{Alternate course (player is not logged in):}
+The system ignores the request and displays the account page.
+
+\subsection{Game package}
+
+\subsubsection{Game selection}
+
+\heading{Basic Course:}
+The system displays the game selection page showing four large buttons with the name and description of the game. The user presses one of the buttons. The system takes the user to the selected starting game page. The system displays the difficulty selection page for a game. The system shows the title of the game, best highscore of the player, leaderboard, and two buttons: difficulty change and start game. When page is first loaded the button displays "difficulty: Easy". The player presses the difficulty button, the system updates the game's difficulty to be "Normal" and the button's text is updated to be "Difficulty: Normal". Player presses the start game button. System proceeds to take the player to the game progress page and starts the game.    
+
+
+\heading{Alternate Course :}
+
+\subsubsection{Playing Pair-Up}
+\heading{Basic Course (Cards match):}
+The system displays the Pair-up game playing page. The system shows two labels, one with a stopwatch and one with a mistake count. On the page there is a display of several cards (that are buttons), that the player can press. Player presses a button, then the system updates that button and a symbol appears on the button. Player then presses a different button, system updates that button with the same symbol. The system recognizes that the symbols on the buttons match and does not increse the mistakes counter. System leaves the buttons with visible symbols as to inform the player that they guessed the two cards with the exact same symbol.
+
+
+\heading{Alternate Course (Cards do not match):}
+The system displays the Pair-up game playing page. The system shows two labels, one with a stopwatch and one with a mistake count. On the page there is a display of several cards that are buttons, that the player can press. The player presses a button, then the system updates that button and a symbol appears on the button. Player then presses a different button, system updates that button with a different symbol. The system recognizes that the symbols on the buttons do not match and increses the mistakes counter. System removes the symbols that are on the buttons as to inform the player they did not guess the two cards with the exact same symbol.
+
+
+\subsubsection{Playing Aim Trainer}
+\heading{Basic Course:}
+
+\heading{Alternate Course:}
+
+\subsubsection{Playing Sudoku}
+\heading{Basic Course:}
+
+\heading{Alternate Course:}
+
+
+\subsubsection{Playing Math Game}
+\heading{Basic Course:}
+
+\heading{Alternate Course:}
+
+
+\subsection{Statistics package}
+\heading{Basic Course:}
+
+\heading{Alternate Course:}
+
+\subsubsection{Change high score visibility}
+
+\heading{Basic Course:}
+The system displays the settings page. The player activates the privacy switch bar. The system marks the player's scores as private and hides them in the leaderboards.
+
+\heading{Alternate Course (The scores were already private):}
+The system marks the player's scores as public and reveals them in the leaderboards.
+
+\subsubsection{View shortened game statistics}
+
+\heading{Basic Course:}
+The system displays the statistics page. The user selects the difficulty with the buttons near a specific game. The system displays a shortened version of the statistics (amount of games played, highest score, average score) for that game filtered by the selected difficulty. The user views the shortened game statistics.
+
+\heading{Alternate Course (No Scores Were Found):}
+The system shows a message indicating that no scores were found.
+
+\subsubsection{View graph of average scores}
+
+\heading{Basic Course:}
+The system displays the statistics page. The user clicks the expand button near a game. The user clicks the "average score" button. The system displays a graph of the user's average score for the last 7 days (for all difficulties). The user views the graph.
+
+\heading{Alternate Course (No Scores Were Found):}
+The system hides the expand button and shows a message indicating that no scores were found.
+
+\subsubsection{View timeline of played games}
+
+\heading{Basic Course:}
+The system displays the statistics page. The user clicks the expand button near a game. The user clicks the "last games" button. The system displays a list of the user's 10 most recent game statistics (date, score, difficulty) for all difficulties. The user views the list of scores.
+
+\heading{Alternate Course (No Scores Were Found):}
+The system hides the expand button and shows a message indicating that no scores were found.
+
 % Behavioural description, as defined in the ICONIX process, up to the robustness analysis.
 
 \section{Tracebility}

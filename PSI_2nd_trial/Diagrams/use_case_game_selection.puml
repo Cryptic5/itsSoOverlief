@@ -2,13 +2,17 @@
 left to right direction
 :Player: as player
 
-rectangle "Game Selection" as game_selection {
+rectangle "Game" as game_selection {
+    usecase "Select game" as select_game
+    usecase "Select difficulty" as select_difficulty
     usecase "Play <U+0022>Aim Trainer<U+0022>" as aim_trainer
     usecase "Play <U+0022>Math Game<U+0022>" as math_game
     usecase "Play <U+0022>Pair Up<U+0022>" as pair_up
     usecase "Play <U+0022>Sudoku<U+0022>" as sudoku
 }
 
+player --> select_game
+player --> select_difficulty
 player --> aim_trainer
 player --> math_game
 player --> pair_up

@@ -32,3 +32,20 @@ the other information.
 
 *The viewpoints should cover at least the UML 4+1 structure, security
 perspective is mandatory as well.*
+
+## Sources
+
+Skaidres, Rozanski and Woods knyga
+
+## verbyla
+
+contextas irgi yra viewpoints (labiau higher level)
+reikia visu viewpointu bet nebutina visu pletoti
+jei vieno viewpointo kazkodel negalima padengti, reikia aprasyti, kodel atsisakoma
+
+testability reikia aprasyt testus (ne visus individualiai, bet logiskai sugrupuoti)
+testability atraeilis dalykas (t.y. pagrinde tie views svarbiausia doc'o dalis)
+
+vocabulary parinkt pagal viewpointa (t.y. jei viewpointas nelabai techninis vengt tech zargono)
+
+PAMASTYMUI: testability gali but integruota i integrational sekcija, bet galima ir atskirai

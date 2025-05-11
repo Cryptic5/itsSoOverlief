@@ -1,0 +1,116 @@
+%--------------------
+% Packages
+% -------------------
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage{gentium}
+\usepackage{mathptmx} % Use Times Font
+\newcommand{\heading}[1]{\vspace{1em}\noindent\textbf{#1}\par\vspace{0.5em}}
+
+%1. Choose a change request for the system.
+%2. Perform impact analysis, define implementation alternatives, estimates.
+%3. Define a project plan for implementing the change.
+%4. Elaborate the requirements using the ICONIX process.
+%   The expected output: Change request and its impact analysis document, project
+%   plan document and the requirements document.
+%
+%Suggested requirements document structure:
+%1. Context. Context of the system and the planned change, etc.
+%2. Static Model. As defined in the ICONIX process, up to the robustness analysis.
+%3. Use Cases. Behavioural description, as defined in the ICONIX process, up to the robustness analysis.
+%4. Traceability. Mapping with requirements as well as between the views.
+%This document only covers the parts of the model, that are necessary to describe the requirements in question.
+
+
+\usepackage{comment}
+\usepackage[pdftex]{graphicx} % Required for including pictures
+\usepackage[pdftex,linkcolor=black,pdfborder={0 0 0}]{hyperref} % Format links for pdf
+\usepackage{calc} % To reset the counter in the document after title page
+\usepackage{enumitem} % Includes lists
+
+\frenchspacing % No double spacing between sentences
+\linespread{1.2} % Set linespace
+\usepackage[a4paper, lmargin=0.1666\paperwidth, rmargin=0.1666\paperwidth, tmargin=0.1111\paperheight, bmargin=0.1111\paperheight]{geometry} %margins
+%\usepackage{parskip}
+
+\usepackage[all]{nowidow} % Tries to remove widows
+\usepackage[protrusion=true,expansion=true]{microtype} % Improves typography, load after fontpackage is selected
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage[export]{adjustbox}
+\usepackage{plantuml}
+\usepackage{float}
+\usepackage{indentfirst}
+\usepackage{subcaption}
+\usepackage{booktabs}
+
+\usepackage{graphicx}
+
+%\usepackage{etoolbox} % Adds '\clearpage' to every '\section command' (newpage).
+%\pretocmd{\section}{\clearpage}{}{} 
+
+\newcommand{\inputdiagram}[1]{\input{#1}}
+\newcommand{\textwidthdiagram}[2][1]{%
+  \resizebox{#1\textwidth}{!}{\inputdiagram{PSI_3rd_trial/#2}}%
+}
+
+%-----------------------
+% Set pdf information and add title, fill in the fields
+%-----------------------
+\hypersetup{ 	
+pdfsubject = {Program Systems Engineering},
+pdftitle = {itssoover},
+pdfauthor = {Ignas Časas, Mykolas Marius Budrys, Augustas Kniška}
+}
+
+%-----------------------
+% Begin document
+%-----------------------
+\begin{document} %All text i dokumentet hamnar mellan dessa taggar, allt ovanför är formatering av dokumentet
+
+\begin{titlepage}
+    \centering
+    % Remove page numbering from title
+    \thispagestyle{empty}
+    
+    % University name
+    {\Large VILNIAUS UNIVERSITETAS\\
+    Matematikos ir informatikos fakultetas}\par
+    
+    \vspace{3cm} % vertical space
+    
+    % Title of the work
+    {\Large 3\textsuperscript{rd} Laboratory Work}\par
+    \vspace{0.5cm}
+    {\Large \textbf{itssoover}}\par
+    {\Large \textbf{Architecture \& CI/CD}}\par
+    
+    \vspace{3cm}
+    
+    % Authors
+    {\large
+    Ignas Časas\\
+    Mykolas Marius Budrys\\
+    Augustas Kniška
+    }\par
+    
+    \vspace{8cm}
+    
+    % Bottom of the page
+    {\large
+    Matematikos ir informatikos fakultetas\\
+    Vilniaus universitetas\\
+    Lietuva
+    }\par
+    \vfill
+
+    \large 2025
+    
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\end{document}

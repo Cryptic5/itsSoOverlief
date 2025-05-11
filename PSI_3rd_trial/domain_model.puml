@@ -1,15 +1,25 @@
 @startuml domain_model
 :Player: as player
 rectangle "Player account" as p_account
-rectangle "Game" as game
-rectangle "High score entry" as hs_entry
+card game [
+    Game
+    ---
+    + description : String
+    + difficulty : String
+]
+card hs_entry [
+    High score entry
+    ---
+    + score : int
+]
+rectangle "Card" as Card
+rectangle "Timer" as Timer
 rectangle "Leaderboard" as leaderboard
 rectangle "Aim trainer" as aim_trainer
 rectangle "Pair up" as pair_up
 rectangle "Math game" as math_game
 rectangle "Sudoku" as sudoku
 rectangle "Score visibility settings" as settings
-rectangle "Difficulty" as difficulty
 rectangle "Database" as database
 rectangle "High score tracking system" as hs_tracking_system
 rectangle "Authentication system" as auth_tracking_system
@@ -18,14 +28,20 @@ rectangle "Game history" as game_history
 rectangle "Personal statistics" as personal_statistics
 rectangle "Statistics filter" as statistics_filter
 rectangle "Board size" as board_size
+card p_session [
+    Player Session
+    ---
+    + loggedIn : boolean
+]
 
 game <|-- aim_trainer
 game <|-- pair_up
 game <|-- math_game
 game <|-- sudoku
-game o-- difficulty
 
+game o-- Timer
 player_list o-- p_account
+pair_up o-- Card
 sudoku o-- board_size
 personal_statistics o-- statistics_filter
 p_account o-- settings
@@ -36,5 +52,6 @@ leaderboard o-- hs_entry
 player o-- p_account
 hs_entry o-- game
 hs_entry o-- p_account
+p_session o-- p_account
 
 @enduml

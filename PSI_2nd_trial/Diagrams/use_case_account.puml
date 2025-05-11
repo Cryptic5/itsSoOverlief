@@ -3,14 +3,11 @@
 left to right direction
 :Player: as player
 
-rectangle "Authentcation" as account {
+rectangle "Authentication" as account {
     usecase "Log in" as log_in
     usecase "Sign up" as sign_up
     usecase "Log off" as log_out
 }
-
-player <|-- u_player
-player <|-- a_player
 
 player --> log_in
 player --> sign_up

@@ -11,6 +11,7 @@ rectangle "Game" as game_selection {
     usecase "Play <U+0022>Sudoku<U+0022>" as sudoku
 }
 
+select_game ..> select_difficulty : <<invokes>>
 player --> select_game
 player --> select_difficulty
 player --> aim_trainer

@@ -2,20 +2,14 @@
 ' !pragma layout smetana
 left to right direction
 :Player: as player
-:Unauthenticated player: as u_player
-:Authenticated player: as a_player
 
-rectangle "Account" as account {
+rectangle "Authentication" as account {
     usecase "Log in" as log_in
     usecase "Sign up" as sign_up
-    usecase "Log out" as log_out
+    usecase "Log off" as log_out
 }
 
-player <|-- u_player
-player <|-- a_player
-
-u_player --> log_in
-u_player --> sign_up
-
-a_player --> log_out
+player --> log_in
+player --> sign_up
+player --> log_out
 @enduml
